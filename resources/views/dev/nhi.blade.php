@@ -1,4 +1,4 @@
-<h1>nhi's dev page</h1>
+<h1>nhi's dev page, Like a Boss</h1>
 
 <h2>Events:</h2>
 @foreach ($events as $event) 
