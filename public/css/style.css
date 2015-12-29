@@ -28,3 +28,9 @@
     background-color:rebeccapurple;
     color:white;
 }
+
+/*styling for patrons menu/legend titles*/
+#menuInfo {
+    font-family: helvetica;
+    font-weight: bold;
+}
