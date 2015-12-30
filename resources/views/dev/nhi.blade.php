@@ -52,7 +52,7 @@ $( document ).ready(function() {
 		eventID = $(this).attr('id');
 	});
 	//=== Run Ajax call to get patrons for the event ===//
-	$('#load').on('click', function() {
+	$('#load, .events').on('click', function() {
 		$.get( "/getPatronsInEvent/"+eventID, function( data ) {
 			console.log(data);// MOI use the DATA acquired here!!
             $('#transportArrangments').html('');

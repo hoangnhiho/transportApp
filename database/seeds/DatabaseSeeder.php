@@ -133,7 +133,7 @@ class DatabaseSeeder extends Seeder {
         	['event_id' => '3','patron_id' => '7','carthere' => 'adeline','carback' => 'adeline','leavingtime' => 'na', 'softdelete' => '1'],
         	['event_id' => '3','patron_id' => '8','carthere' => 'driving','carback' => 'driving','leavingtime' => 'na', 'softdelete' => '1'],
         	['event_id' => '3','patron_id' => '9','carthere' => 'any','carback' => 'adeline','leavingtime' => 'na', 'softdelete' => '1'],
-        	['event_id' => '3','patron_id' => '10','carthere' => 'none','carback' => 'none','leavingtime' => 'na', 'softdelete' => '1'],
+        	['event_id' => '3','patron_id' => '10','carthere' => 'none','carback' => 'none','leavingtime' => 'na', 'softdelete' => '0'],
         ));
 	}
 
