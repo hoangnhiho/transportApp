@@ -67,4 +67,20 @@ class HomeController extends Controller {
 	{
 		return view('dev.moi');
 	}
+
+	/**
+	 * getPatronsInEvent = array of objects with patron's details going to the event
+	 *
+	 * @return Array of Objects
+	 */
+	public function getPatronsInEvent($eventID)
+	{
+		$PatronsInEvent = DB::table('event_patron')
+				->where('event_id', $eventID)
+            	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
+				->get();
+		return $PatronsInEvent;
+	}
+
+
 }
