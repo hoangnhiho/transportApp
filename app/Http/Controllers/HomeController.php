@@ -43,7 +43,14 @@ class HomeController extends Controller {
 	 */
 	public function joel()
 	{
-		return view('dev.joel');
+		$patrons = DB::table('patrons')->get();
+		$eventID = DB::table('events')->first();
+		$events = DB::table('events')->get();
+		$patronsInEvent = DB::table('event_patron')
+			->where('event_id', $eventID->id)
+	    	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
+			->get();
+		return view('dev.joel', ['patronsInEvent' => $patronsInEvent, 'events' => $events]);
 	}
 
 	/**
@@ -54,8 +61,13 @@ class HomeController extends Controller {
 	public function nhi()
 	{
 		$patrons = DB::table('patrons')->get();
+		$eventID = DB::table('events')->first();
 		$events = DB::table('events')->get();
-		return view('dev.nhi', ['patrons' => $patrons, 'events' => $events]);
+		$patronsInEvent = DB::table('event_patron')
+			->where('event_id', $eventID->id)
+	    	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
+			->get();
+		return view('dev.nhi', ['patronsInEvent' => $patronsInEvent, 'events' => $events]);
 	}
 
 	/**
@@ -77,6 +89,7 @@ class HomeController extends Controller {
 	{
 		$PatronsInEvent = DB::table('event_patron')
 				->where('event_id', $eventID)
+				->where('softdelete', '=', '1')
             	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
 				->get();
 		return $PatronsInEvent;

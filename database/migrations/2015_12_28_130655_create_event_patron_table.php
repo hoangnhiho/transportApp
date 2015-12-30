@@ -23,6 +23,8 @@ class CreateEventPatronTable extends Migration {
 			$table->string('carthere');
 			$table->string('carback');
 			$table->string('leavingtime');
+
+			$table->boolean('softDelete');
 			$table->timestamps();
 		});
 	}

@@ -21,9 +21,9 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">Patrons</div>
 			<div class="panel-body">
-				@foreach ($patrons as $patron) 
+				@foreach ($patronsInEvent as $patron) 
 					<img src="{{$patron->picurl}}" alt="patronPic" height="42" width="42"> 
-					<spam>{{$patron->name}}, {{$patron->address}}, {{$patron->suburb}}</spam></br>
+					<spam>{{$patron->name}} - {{$patron->address}}, {{$patron->suburb}}</spam></br>
 				@endforeach
 			</div>
 		</div>

@@ -19,6 +19,7 @@ class CreatePatronsTable extends Migration {
 			$table->string('picurl');
 			$table->string('address');
 			$table->string('suburb');
+			$table->string('nearby')->nullable();//patron that is nearby
 			$table->timestamps();
 		});
 	}
