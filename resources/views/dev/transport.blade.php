@@ -17,17 +17,20 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-3">
+	<div class="col-md-6">
 		<div class="panel panel-default">
 			<div class="panel-heading">Patrons</div>
 			<div class="panel-body" id='patronList'>
                 @foreach ($patronsInEvent as $patron) 
-                    <div class="checkbox">
-                        <label>
+                    <div class="row">
+                        <div class="col-md-1">
                             <input type="checkbox" id="patron{{$patron->id}}" @if ($patron->softDelete =='1') checked @endif> 
+                        </div>
+                        <div class="col-md-5">
                             <img src="{{$patron->picurl}}" alt="patronPic" height="42" width="42"> 
-                            <spam>{{$patron->name}} - {{$patron->address}}, {{$patron->suburb}}
-
+                            <spam>{{$patron->name}} - {{$patron->address}}, {{$patron->suburb}}</spam>
+                        </div>
+                        <div class="col-md-3">
                             <select class="form-control carthereOptions">
                                 <option id="carthere{{$patron->id}}-none" @if($patron->carthere == 'none') selected @endif>none</option>
                                 <option id="carthere{{$patron->id}}-any" @if($patron->carthere == 'any') selected @endif>any</option>
@@ -38,7 +41,8 @@
                                     @endif
                                 @endforeach
                             </select>
-
+                        </div>
+                        <div class="col-md-3">
                             <select class="form-control carbackOptions">
                                 <option selected="selected" id="carback{{$patron->id}}-none" @if($patron->carback == 'none') selected @endif>none</option>
                                 <option id="carback{{$patron->id}}-any" @if($patron->carback == 'any') selected @endif>any</option>
@@ -49,15 +53,14 @@
                                     @endif
                                 @endforeach
                             </select>
-                            </spam></br>
-                        </label>
+                        </div>
                     </div>
                 @endforeach
 			</div>
 		</div>
 		<button type="button" class="btn btn-primary" id="load">Click ME!</button>
 	</div>
-	<div class="col-md-7">
+	<div class="col-md-4">
 		<div class="panel panel-default">
 			<div class="panel-heading">Transport</div>
 			<div class="panel-body" id="transportArrangments">
