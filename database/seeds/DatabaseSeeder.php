@@ -135,6 +135,11 @@ class DatabaseSeeder extends Seeder {
         	['event_id' => '3','patron_id' => '9','carthere' => 'any','carback' => 'adeline','leavingtime' => 'na', 'softdelete' => '1'],
         	['event_id' => '3','patron_id' => '10','carthere' => 'none','carback' => 'none','leavingtime' => 'na', 'softdelete' => '0'],
         ));
+        DB::table('nearby_sets')->insert(array(
+            ['nearbyset' => '1,4,9'],
+            ['nearbyset' => '2,5'],
+            ['nearbyset' => '6,11']
+        ));
 	}
 
 }

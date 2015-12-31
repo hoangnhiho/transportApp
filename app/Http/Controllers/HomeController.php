@@ -58,16 +58,16 @@ class HomeController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function nhi()
+	public function show($eventID)
 	{
 		$patrons = DB::table('patrons')->get();
-		$eventID = DB::table('events')->first();
 		$events = DB::table('events')->get();
+		$nearbySets = DB::table('nearby_sets')->get();
 		$patronsInEvent = DB::table('event_patron')
-			->where('event_id', $eventID->id)
+			->where('event_id', $eventID)
 	    	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
 			->get();
-		return view('dev.nhi', ['patronsInEvent' => $patronsInEvent, 'events' => $events]);
+		return view('dev.transport', ['eventID' => $eventID, 'patronsInEvent' => $patronsInEvent, 'events' => $events, 'nearbySets' => $nearbySets]);
 	}
 
 	/**
@@ -87,13 +87,25 @@ class HomeController extends Controller {
 	 */
 	public function getPatronsInEvent($eventID)
 	{
+		$nearbySets = DB::table('nearby_sets')->select('nearbyset')->get();
 		$PatronsInEvent = DB::table('event_patron')
 				->where('event_id', $eventID)
-				->where('softdelete', '=', '1')
             	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
 				->get();
-		return $PatronsInEvent;
+		return array_merge($PatronsInEvent, $nearbySets);
 	}
 
+	/**
+	 * getPatronsInEvent = array of objects with patron's details going to the event
+	 *
+	 * @return Array of Objects
+	 */
+	public function toggleEventPatron($eventID, $patronID, $toggleID)
+	{
+		DB::table('event_patron')
+            ->where('event_id', $eventID)
+            ->where('patron_id', $patronID)
+            ->update(['softDelete' => $toggleID]);
+	}
 
 }

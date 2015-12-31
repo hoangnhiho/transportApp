@@ -1,2 +1,11 @@
 [29-Dec-2015 11:17:41 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/7b213aa5fdd7ef15bc824a33b67b70f1 on line 4
 [29-Dec-2015 11:18:13 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/7b213aa5fdd7ef15bc824a33b67b70f1 on line 4
+[30-Dec-2015 13:02:33 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 60
+[31-Dec-2015 11:18:37 UTC] PHP Parse error:  syntax error, unexpected ':', expecting ']' in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 64
+[31-Dec-2015 11:18:54 UTC] PHP Parse error:  syntax error, unexpected ':', expecting ']' in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 64
+[31-Dec-2015 11:19:00 UTC] PHP Parse error:  syntax error, unexpected ':', expecting ']' in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 64
+[31-Dec-2015 11:19:11 UTC] PHP Parse error:  syntax error, unexpected ':', expecting ']' in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 64
+[31-Dec-2015 11:19:46 UTC] PHP Parse error:  syntax error, unexpected '{' in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 64
+[31-Dec-2015 11:20:02 UTC] PHP Parse error:  syntax error, unexpected '{', expecting ']' in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 64
+[31-Dec-2015 11:21:46 UTC] PHP Parse error:  syntax error, unexpected '{', expecting ']' in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 64
+[31-Dec-2015 11:21:48 UTC] PHP Parse error:  syntax error, unexpected '{', expecting ']' in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 64
