@@ -90,7 +90,7 @@ $( document ).ready(function() {
 			$.each(data, function( index, value ) {//grabs each object in DATA
                 if (value.event_id && value.softDelete == "1"){
 			        $('#transportArrangments').append('<img src="' + value.picurl + '" alt="patronPic" height="42" width="42">' + 
-                        ' ' + value.name + ' - ' + value.address + ', ' + value.suburb+ '</br>');
+                        ' ' + value.name + ' - ' + value.address + ', ' + value.suburb + ', ' + value.carthere + ', ' + value.carback + '</br>');
                 }else if(value.nearbyset){
                     $('#transportArrangments').append(value.nearbyset + '</br>');
                 }
@@ -107,6 +107,8 @@ $( document ).ready(function() {
                 //console.log(data);// MOI use the DATA acquired here!!
             });
         }else{
+            $('#carthere'+patronID+'-none').prop('selected', true);
+            $('#carback'+patronID+'-none').prop('selected', true);
             $.get( "/toggleEventPatron/"+eventID+"/"+patronID+"/"+"0", function( data ) {
                 //console.log(data);// MOI use the DATA acquired here!!
             });

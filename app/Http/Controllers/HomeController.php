@@ -107,6 +107,16 @@ class HomeController extends Controller {
             ->where('event_id', $eventID)
             ->where('patron_id', $patronID)
             ->update(['softDelete' => $toggleID]);
+        if ($toggleID == "0"){
+			DB::table('event_patron')
+	            ->where('event_id', $eventID)
+	            ->where('patron_id', $patronID)
+	            ->update(['carthere' => 'none']);
+			DB::table('event_patron')
+	            ->where('event_id', $eventID)
+	            ->where('patron_id', $patronID)
+	            ->update(['carback' => 'none']);
+	    }
 	}
 	
 	/**
