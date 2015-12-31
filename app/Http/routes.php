@@ -28,6 +28,9 @@ Route::get('test', function()
 Route::get('event/{eventID}', 'HomeController@show');
 Route::get('getPatronsInEvent/{eventID}', 'HomeController@getPatronsInEvent');
 Route::get('toggleEventPatron/{eventID}/{patronID}/{toggleID}', 'HomeController@toggleEventPatron');
+Route::get('postCarThere/{eventID}/{patronID}/{driverID}', 'HomeController@postCarThere');
+Route::get('postCarBack/{eventID}/{patronID}/{driverID}', 'HomeController@postCarBack');
+
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

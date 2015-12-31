@@ -26,7 +26,30 @@
                         <label>
                             <input type="checkbox" id="patron{{$patron->id}}" @if ($patron->softDelete =='1') checked @endif> 
                             <img src="{{$patron->picurl}}" alt="patronPic" height="42" width="42"> 
-                            <spam>{{$patron->name}} - {{$patron->address}}, {{$patron->suburb}}</spam></br>
+                            <spam>{{$patron->name}} - {{$patron->address}}, {{$patron->suburb}}
+
+                            <select class="form-control carthereOptions">
+                                <option id="carthere{{$patron->id}}-none" @if($patron->carthere == 'none') selected @endif>none</option>
+                                <option id="carthere{{$patron->id}}-any" @if($patron->carthere == 'any') selected @endif>any</option>
+                                <option id="carthere{{$patron->id}}-driving" @if($patron->carthere == 'driving') selected @endif>driving</option>
+                                @foreach ($patronsInEvent as $patron1) 
+                                    @if ($patron1->carthere == 'driving' && $patron->carthere != $patron1->carthere)
+                                        <option id="carthere{{$patron->id}}-{{$patron1->name}}" @if($patron->carthere == $patron1->name) selected @endif>{{$patron1->name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+
+                            <select class="form-control carbackOptions">
+                                <option selected="selected" id="carback{{$patron->id}}-none" @if($patron->carback == 'none') selected @endif>none</option>
+                                <option id="carback{{$patron->id}}-any" @if($patron->carback == 'any') selected @endif>any</option>
+                                <option id="carback{{$patron->id}}-driving" @if($patron->carback == 'driving') selected @endif>driving</option>
+                                @foreach ($patronsInEvent as $patron2) 
+                                    @if ($patron2->carback == 'driving' && $patron->carback != $patron2->carback)
+                                        <option id="carback{{$patron->id}}-{{$patron2->name}}" @if($patron->carback == $patron2->name) selected @endif>{{$patron2->name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            </spam></br>
                         </label>
                     </div>
                 @endforeach
@@ -57,7 +80,7 @@ $( document ).ready(function() {
 	});
 
 	//=== Run Ajax call to get patrons for the event ===//
-	$('#load, window').on('click', function() {
+	$('#load').on('click', function() {
 		$.get( "/getPatronsInEvent/"+eventID, function( data ) {
             $('#transportArrangments').html('');
             //==== Dynamically remake Transport Panel ===//
@@ -85,6 +108,26 @@ $( document ).ready(function() {
                 //console.log(data);// MOI use the DATA acquired here!!
             });
         }
+    });
+
+    //=== CarThereOptions Ajax calls ===//
+    $('.carthereOptions').on('change', function (e) {
+        var tempVar = $(this).children(":selected").attr("id").substring(8).split('-');
+        var patronId = tempVar[0];
+        var driverId = tempVar[1];
+        $.get( "/postCarThere/"+eventID+"/"+patronId+"/"+driverId, function( data ) {
+            console.log(data);// MOI use the DATA acquired here!!
+        });
+    });
+
+    //=== CarBackOptions Ajax calls ===//
+    $('.carbackOptions').on('change', function (e) {
+        var tempVar = $(this).children(":selected").attr("id").substring(7).split('-');
+        var patronId = tempVar[0];
+        var driverId = tempVar[1];
+        $.get( "/postCarBack/"+eventID+"/"+patronId+"/"+driverId, function( data ) {
+            console.log(data);// MOI use the DATA acquired here!!
+        });
     });
 });
 

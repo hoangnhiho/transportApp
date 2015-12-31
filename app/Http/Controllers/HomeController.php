@@ -67,6 +67,7 @@ class HomeController extends Controller {
 			->where('event_id', $eventID)
 	    	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
 			->get();
+		
 		return view('dev.transport', ['eventID' => $eventID, 'patronsInEvent' => $patronsInEvent, 'events' => $events, 'nearbySets' => $nearbySets]);
 	}
 
@@ -106,6 +107,34 @@ class HomeController extends Controller {
             ->where('event_id', $eventID)
             ->where('patron_id', $patronID)
             ->update(['softDelete' => $toggleID]);
+	}
+	
+	/**
+	 * getPatronsInEvent = array of objects with patron's details going to the event
+	 *
+	 * @return Array of Objects
+	 */
+	public function postCarThere($eventID, $patronID, $driverID)
+	{
+		DB::table('event_patron')
+            ->where('event_id', $eventID)
+            ->where('patron_id', $patronID)
+            ->update(['carthere' => $driverID]);
+        //return "eventID = ".$eventID." | patronID = ".$patronID." | driverID = ".$driverID;
+	}
+
+	/**
+	 * getPatronsInEvent = array of objects with patron's details going to the event
+	 *
+	 * @return Array of Objects
+	 */
+	public function postCarBack($eventID, $patronID, $driverID)
+	{
+		DB::table('event_patron')
+            ->where('event_id', $eventID)
+            ->where('patron_id', $patronID)
+            ->update(['carback' => $driverID]);
+        //return "eventID = ".$eventID." | patronID = ".$patronID." | driverID = ".$driverID;
 	}
 
 }

@@ -105,7 +105,7 @@ class DatabaseSeeder extends Seeder {
 
         DB::table('event_patron')->insert(array(
         	['event_id' => '1','patron_id' => '1','carthere' => 'any','carback' => 'adeline','leavingtime' => 'na', 'softdelete' => '1'],
-        	['event_id' => '1','patron_id' => '2','carthere' => 'driving','carback' => 'driving','leavingtime' => 'na', 'softdelete' => '1'],
+        	['event_id' => '1','patron_id' => '2','carthere' => 'driving','carback' => 'any','leavingtime' => 'na', 'softdelete' => '1'],
             ['event_id' => '1','patron_id' => '3','carthere' => 'driving','carback' => 'driving','leavingtime' => 'na', 'softdelete' => '1'],
         	['event_id' => '1','patron_id' => '4','carthere' => 'any','carback' => 'staying','leavingtime' => 'na', 'softdelete' => '1'],
         	['event_id' => '1','patron_id' => '5','carthere' => 'adeline','carback' => 'moi','leavingtime' => 'na', 'softdelete' => '1'],
