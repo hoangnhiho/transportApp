@@ -25,6 +25,7 @@ Route::get('test', function()
 });
 
 //==== Serious Stuff! ====//
+Route::get('event', 'HomeController@getEventList');
 Route::get('event/{eventID}', 'HomeController@show');
 Route::get('getPatronsInEvent/{eventID}', 'HomeController@getPatronsInEvent');
 Route::get('toggleEventPatron/{eventID}/{patronID}/{toggleID}', 'HomeController@toggleEventPatron');

@@ -1,7 +1,6 @@
 @extends('app')
 
 @section('content')
-<h1>nhi's dev page, Like a Boss</h1>
 <div class='row'>
 	<div class="col-md-2">
 		<div class="panel panel-default">
@@ -19,7 +18,14 @@
 	</div>
 	<div class="col-md-6">
 		<div class="panel panel-default">
-			<div class="panel-heading">Patrons</div>
+			<div class="panel-heading">
+                <div class="row" style="padding:0px 15px">
+                Patrons
+                <button type="button" class="btn btn-success btn-sm pull-right" id="refreshBtn">
+                    <spam class="glyphicon glyphicon-refresh" aria-hidden="true"></spam>
+                </button>
+                </div>
+            </div>
 			<div class="panel-body" id='patronList'>
                 @foreach ($patronsInEvent as $patron) 
                     <div class="row">
@@ -58,13 +64,13 @@
                 @endforeach
 			</div>
 		</div>
-		<button type="button" class="btn btn-primary" id="load">Click ME!</button>
-	</div>
+		<button type="button" class="btn btn-primary" style="width: 100%" id="load">Run Algorithm!</button>
+        </br>
+    </div>
 	<div class="col-md-4">
 		<div class="panel panel-default">
 			<div class="panel-heading">Transport</div>
 			<div class="panel-body" id="transportArrangments">
-				
 			</div>
 		</div>
 	</div>
@@ -74,7 +80,11 @@
 $( document ).ready(function() {
 	//Page load settings
 	var eventID = {!!$eventID!!};
-
+    runAlgorithm();
+    //=== Get eventID ===//
+    $('#refreshBtn').on('click', function() {
+        window.location.reload(1);
+    });
 	//=== Get eventID ===//
 	$('.events').on('click', function() {
 		$('.events').removeClass('active');
@@ -82,20 +92,9 @@ $( document ).ready(function() {
 		eventID = $(this).attr('id');
 	});
 
-	//=== Run Ajax call to get patrons for the event ===//
+	//=== force run Algorithm ===//
 	$('#load').on('click', function() {
-		$.get( "/getPatronsInEvent/"+eventID, function( data ) {
-            $('#transportArrangments').html('');
-            //==== Dynamically remake Transport Panel ===//
-			$.each(data, function( index, value ) {//grabs each object in DATA
-                if (value.event_id && value.softDelete == "1"){
-			        $('#transportArrangments').append('<img src="' + value.picurl + '" alt="patronPic" height="42" width="42">' + 
-                        ' ' + value.name + ' - ' + value.address + ', ' + value.suburb + ', ' + value.carthere + ', ' + value.carback + '</br>');
-                }else if(value.nearbyset){
-                    $('#transportArrangments').append(value.nearbyset + '</br>');
-                }
-			});
-		}, "json" );
+		runAlgorithm();
 	});
 
     //=== checkbox patron Ajax calls ===//
@@ -103,15 +102,11 @@ $( document ).ready(function() {
         var $this = $(this);
         var patronID = $this.attr("id").substring(6);
         if($this.is(":checked")){
-            $.get( "/toggleEventPatron/"+eventID+"/"+patronID+"/"+"1", function( data ) {
-                //console.log(data);// MOI use the DATA acquired here!!
-            });
+            $.get( "/toggleEventPatron/"+eventID+"/"+patronID+"/"+"1", function( data ) {});
         }else{
             $('#carthere'+patronID+'-none').prop('selected', true);
             $('#carback'+patronID+'-none').prop('selected', true);
-            $.get( "/toggleEventPatron/"+eventID+"/"+patronID+"/"+"0", function( data ) {
-                //console.log(data);// MOI use the DATA acquired here!!
-            });
+            $.get( "/toggleEventPatron/"+eventID+"/"+patronID+"/"+"0", function( data ) {});
         }
     });
 
@@ -134,7 +129,28 @@ $( document ).ready(function() {
             console.log(data);// MOI use the DATA acquired here!!
         });
     });
+
+    //=== run algorithm uses Ajax calls to retrive data===//
+    function runAlgorithm() {
+        $.get( "/getPatronsInEvent/"+eventID, function( data ) {
+            $('#transportArrangments').html('');
+            //==== Dynamically remake Transport Panel ===//
+            $.each(data, function( index, value ) {//grabs each object in DATA
+                if (value.event_id && value.softDelete == "1"){
+                    $('#transportArrangments').append('<img src="' + value.picurl + '" alt="patronPic" height="42" width="42">' + 
+                        ' ' + value.name + ' - ' + value.address + ', ' + value.suburb + ', ' + value.carthere + ', ' + value.carback + '</br>');
+                }else if(value.nearbyset){
+                    $('#transportArrangments').append(value.nearbyset + '</br>');
+                }
+            });
+        }, "json" );
+    }
+
 });
+
+setTimeout(function(){
+   window.location.reload(1);
+}, 120000);
 
 </script>
 

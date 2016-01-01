@@ -58,6 +58,16 @@ class HomeController extends Controller {
 	 *
 	 * @return Response
 	 */
+	public function getEventList()
+	{
+		$events = DB::table('events')->get();
+		return view('dev.showAll', ['events' => $events, ]);
+	}
+	/**
+	 * Show the application dashboard to the user.
+	 *
+	 * @return Response
+	 */
 	public function show($eventID)
 	{
 		$patrons = DB::table('patrons')->get();
