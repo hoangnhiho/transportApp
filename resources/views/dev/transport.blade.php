@@ -3,8 +3,8 @@
 @section('content')
 <style>
     input[type='checkbox'] {
-        width: 30px;
-        height: 30px;
+        width: 25px;
+        height: 25px;
     }
 </style>
 <div class='row'>
@@ -22,12 +22,12 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-6">
+	<div class="col-md-4">
 		<div class="panel panel-default">
 			<div class="panel-heading">
                 <div class="row" style="padding:0px 15px">
                 Patrons
-                <button type="button" class="btn btn-success btn-sm pull-right" id="refreshBtn">
+                <button type="button" class="btn btn-success btn-sm pull-right" id="refreshBtn" style="padding: 2px 5px 0px 5px;">
                     <spam class="glyphicon glyphicon-refresh" aria-hidden="true"></spam>
                 </button>
                 </div>
@@ -37,53 +37,55 @@
                     <div class="col-md-1">
                         <!-- <input type="checkbox" id="checkAll">  -->
                     </div>
-                    <div class="col-md-6"><b>Patron's details</b></div>
-                    <div class="col-md-2"><b>Pref To</b></div>
-                    <div class="col-md-2"><b>Pref Back</b></div>
-                    <div class="col-md-1"><b>Edit</b></div>
+                    <div class="col-md-5"><b>Patron's details</b></div>
+                    <div class="col-md-3"><b>Pref To</b></div>
+                    <div class="col-md-3"><b>Pref Back</b></div>
                 </div>
-                <hr>
+                <hr style="margin-top: 0px; margin-bottom: 10px;">
                 @foreach ($patronsInEvent as $patron) 
                     <div class="row">
                         <div class="col-md-1">
                             <input type="checkbox" id="patron{{$patron->id}}" @if ($patron->softDelete =='1') checked @endif> 
                         </div>
-                        <div class="col-md-6">
-                            <label>
+                        <div class="col-md-1">
                             <img src="{{$patron->picurl}}" alt="patronPic" height="42" width="42"> 
-                            <spam>{{$patron->name}} - {{$patron->address}}, {{$patron->suburb}}</spam>
-                            </label>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a href="{{url('patron/'.$patron->id)}}">{{$patron->name}}</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="font-size: .8em;">{{$patron->address}}, {{$patron->suburb}}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
                             <select class="form-control carthereOptions">
                                 <option id="carthere{{$patron->id}}-none" @if($patron->carthere == 'none') selected @endif>none</option>
                                 <option id="carthere{{$patron->id}}-any" @if($patron->carthere == 'any') selected @endif>any</option>
                                 <option id="carthere{{$patron->id}}-driving" @if($patron->carthere == 'driving') selected @endif>driving</option>
                                 @foreach ($patronsInEvent as $patron1) 
-                                    @if ($patron1->carthere == 'driving' && $patron->carthere != $patron1->carthere)
-                                        <option id="carthere{{$patron->id}}-{{$patron1->name}}" @if($patron->carthere == $patron1->name) selected @endif>{{$patron1->name}}</option>
+                                    @if ($patron1->carthere == 'driving' )
+                                        <option id="carthere{{$patron->id}}-{{$patron1->id}}" @if($patron->carthere == $patron1->id) selected @endif>{{$patron1->name}}</option>
                                     @endif
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <select class="form-control carbackOptions">
                                 <option selected="selected" id="carback{{$patron->id}}-none" @if($patron->carback == 'none') selected @endif>none</option>
                                 <option id="carback{{$patron->id}}-any" @if($patron->carback == 'any') selected @endif>any</option>
                                 <option id="carback{{$patron->id}}-driving" @if($patron->carback == 'driving') selected @endif>driving</option>
                                 @foreach ($patronsInEvent as $patron2) 
                                     @if ($patron2->carback == 'driving' && $patron->carback != $patron2->carback)
-                                        <option id="carback{{$patron->id}}-{{$patron2->name}}" @if($patron->carback == $patron2->name) selected @endif>{{$patron2->name}}</option>
+                                        <option id="carback{{$patron->id}}-{{$patron2->id}}" @if($patron->carback == $patron2->id) selected @endif>{{$patron2->name}}</option>
                                     @endif
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-1">
-                        <a type="button" class="btn btn-default" href="{{url('patron/'.$patron->id)}}">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                        </a>
-                        </div>
                     </div>
+                    <p></p>
                 @endforeach
 			</div>
 		</div>
@@ -99,7 +101,7 @@
 
     </div>
 
-	<div class="col-md-4">
+	<div class="col-md-3">
 		<div class="panel panel-default">
 			<div class="panel-heading">Transport - There</div>
             <div class="panel-body">
@@ -123,13 +125,14 @@
                     @if ($patron3->id == count($patronsInEvent) && $patron3->id % 5 != 0)
                         </div></div>
                     @elseif ($patron3->id == count($patronsInEvent))
-                        </div>
+                        </div><!-- close body-->
                     @endif
                 @endforeach
-        </div>
         
-        
-        </br>
+            </div><!-- close Panel-->
+        </div><!-- close mod-md-3 -->
+
+    <div class="col-md-3">
         <div class="panel panel-default">
             <div class="panel-heading">Transport - Back</div>
             <div class="panel-body">
@@ -150,8 +153,10 @@
                     @if ($patron3->id % 5 == 0)
                         </div>
                     @endif
-                    @if ($patron3->id == count($patronsInEvent))
-                        </div>
+                    @if ($patron3->id == count($patronsInEvent) && $patron3->id % 5 != 0)
+                        </div></div>
+                    @elseif ($patron3->id == count($patronsInEvent))
+                        </div><!-- close body-->
                     @endif
                 @endforeach
             <div class="panel-footer" id="transportArrangments"></div>
