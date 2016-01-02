@@ -31,6 +31,7 @@ Route::get('getPatronsInEvent/{eventID}', 'HomeController@getPatronsInEvent');
 Route::get('toggleEventPatron/{eventID}/{patronID}/{toggleID}', 'HomeController@toggleEventPatron');
 Route::get('postCarThere/{eventID}/{patronID}/{driverID}', 'HomeController@postCarThere');
 Route::get('postCarBack/{eventID}/{patronID}/{driverID}', 'HomeController@postCarBack');
+Route::post('createPatron/{eventID}', 'HomeController@createPatron');
 
 
 Route::controllers([

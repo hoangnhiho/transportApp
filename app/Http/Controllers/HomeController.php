@@ -1,7 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use DB;
-
+use Request;
+use App\patrons;
 
 class HomeController extends Controller {
 
@@ -79,6 +80,34 @@ class HomeController extends Controller {
 			->get();
 		
 		return view('dev.transport', ['eventID' => $eventID, 'patronsInEvent' => $patronsInEvent, 'events' => $events, 'nearbySets' => $nearbySets]);
+	}
+
+	/**
+	 * Show the application dashboard to the user.
+	 *
+	 * @return Response
+	 */
+	public function createPatron($eventID, Request $request)
+	{
+		$input = Request::all();
+		$newPatron = patrons::create($input);
+
+		$events = DB::table('events')->get();
+
+		foreach ($events as $event){
+			$patronsInEvent = DB::table('event_patron')
+				->insert([
+				    'event_id' => $event->id, 
+				    'patron_id' => $newPatron->id,
+				    'carthere' => 'none', 
+				    'carback' => 'none', 
+				    'leavingtime' => 'na',
+				    'softDelete' => '1'
+				]);
+		}
+
+
+		return redirect('event/'.$eventID);
 	}
 
 	/**

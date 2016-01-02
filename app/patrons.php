@@ -16,7 +16,7 @@ class patrons extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name', 'picurl', 'address', 'suburb'];
+	protected $fillable = ['name', 'picurl', 'address', 'suburb', 'nearby'];
 	
 	public function events()
 	{

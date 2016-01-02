@@ -1,6 +1,12 @@
 @extends('app')
 
 @section('content')
+<style>
+    input[type='checkbox'] {
+        width: 30px;
+        height: 30px;
+    }
+</style>
 <div class='row'>
 	<div class="col-md-2">
 		<div class="panel panel-default">
@@ -27,16 +33,27 @@
                 </div>
             </div>
 			<div class="panel-body" id='patronList'>
+                <div class="row">
+                    <div class="col-md-1">
+                        <!-- <input type="checkbox" id="checkAll">  -->
+                    </div>
+                    <div class="col-md-7"><b>Patron's details</b></div>
+                    <div class="col-md-2"><b>Pref To</b></div>
+                    <div class="col-md-2"><b>Pref Back</b></div>
+                </div>
+                <hr>
                 @foreach ($patronsInEvent as $patron) 
                     <div class="row">
                         <div class="col-md-1">
                             <input type="checkbox" id="patron{{$patron->id}}" @if ($patron->softDelete =='1') checked @endif> 
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-7">
+                            <label>
                             <img src="{{$patron->picurl}}" alt="patronPic" height="42" width="42"> 
                             <spam>{{$patron->name}} - {{$patron->address}}, {{$patron->suburb}}</spam>
+                            </label>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <select class="form-control carthereOptions">
                                 <option id="carthere{{$patron->id}}-none" @if($patron->carthere == 'none') selected @endif>none</option>
                                 <option id="carthere{{$patron->id}}-any" @if($patron->carthere == 'any') selected @endif>any</option>
@@ -48,7 +65,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <select class="form-control carbackOptions">
                                 <option selected="selected" id="carback{{$patron->id}}-none" @if($patron->carback == 'none') selected @endif>none</option>
                                 <option id="carback{{$patron->id}}-any" @if($patron->carback == 'any') selected @endif>any</option>
@@ -64,17 +81,76 @@
                 @endforeach
 			</div>
 		</div>
+
+        <button type="button" class="btn btn-primary" style="width: 100%" data-toggle="modal" data-target="#createPatronModal">
+            <spam class="glyphicon glyphicon-plus" aria-hidden="true"></spam>
+            Create new Patron
+        </button><p></p>
 		<button type="button" class="btn btn-primary" style="width: 100%" id="load">Run Algorithm!</button>
-        </br>
+
     </div>
+
 	<div class="col-md-4">
 		<div class="panel panel-default">
-			<div class="panel-heading">Transport</div>
-			<div class="panel-body" id="transportArrangments">
-			</div>
-		</div>
+			<div class="panel-heading">Transport - There</div>
+            <div class="panel-body">
+                <div style="display:none">{{$counter = 1}}</div>
+                @foreach ($patronsInEvent as $patron3) 
+                    @if ($patron3->id % 5 == 1)
+                    <div class="row" id="transportThere{{ceil ($patron3->id/5)}}">
+                    <div class="col-md-3">
+                        <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronThere{{$counter++}}">
+                        {{$patron3->name}}
+                    </div>
+                    @else
+                    <div class="col-md-2">
+                        <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronThere{{$counter++}}">
+                        {{$patron3->name}}
+                    </div>
+                    @endif
+                    @if ($patron3->id % 5 == 0)
+                        </div><!-- close row-->
+                    @endif
+                    @if ($patron3->id == count($patronsInEvent) && $patron3->id % 5 != 0)
+                        </div></div>
+                    @elseif ($patron3->id == count($patronsInEvent))
+                        </div>
+                    @endif
+                @endforeach
+        </div>
+        
+        
+        </br>
+        <div class="panel panel-default">
+            <div class="panel-heading">Transport - Back</div>
+            <div class="panel-body">
+                <div style="display:none">{{$counter = 1}}</div>
+                @foreach ($patronsInEvent as $patron3) 
+                    @if ($patron3->id % 5 == 1)
+                    <div class="row" id="transportBack{{ceil ($patron3->id/5)}}">
+                    <div class="col-md-3">
+                        <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronBack{{$counter++}}">
+                        {{$patron3->name}}
+                    </div>
+                    @else
+                    <div class="col-md-2">
+                        <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronBack{{$counter++}}">
+                        {{$patron3->name}}
+                    </div>
+                    @endif
+                    @if ($patron3->id % 5 == 0)
+                        </div>
+                    @endif
+                    @if ($patron3->id == count($patronsInEvent))
+                        </div>
+                    @endif
+                @endforeach
+            <div class="panel-footer" id="transportArrangments"></div>
+        </div>
 	</div>
 </div>
+
+@include('dev.createModal')
 
 <script>
 $( document ).ready(function() {
@@ -134,23 +210,24 @@ $( document ).ready(function() {
     function runAlgorithm() {
         $.get( "/getPatronsInEvent/"+eventID, function( data ) {
             $('#transportArrangments').html('');
+            console.log(data);
             //==== Dynamically remake Transport Panel ===//
-            $.each(data, function( index, value ) {//grabs each object in DATA
-                if (value.event_id && value.softDelete == "1"){
-                    $('#transportArrangments').append('<img src="' + value.picurl + '" alt="patronPic" height="42" width="42">' + 
-                        ' ' + value.name + ' - ' + value.address + ', ' + value.suburb + ', ' + value.carthere + ', ' + value.carback + '</br>');
-                }else if(value.nearbyset){
-                    $('#transportArrangments').append(value.nearbyset + '</br>');
-                }
-            });
+            // $.each(data, function( index, value ) {//grabs each object in DATA
+            //     if (value.event_id && value.softDelete == "1"){
+            //         $('#transportArrangments').append('<img src="' + value.picurl + '" alt="patronPic" height="42" width="42">' + 
+            //             ' ' + value.name + ' - ' + value.address + ', ' + value.suburb + ', ' + value.carthere + ', ' + value.carback + '</br>');
+            //     }else if(value.nearbyset){
+            //         $('#transportArrangments').append(value.nearbyset + '</br>');
+            //     }
+            // });
         }, "json" );
     }
 
 });
 
-setTimeout(function(){
-   window.location.reload(1);
-}, 120000);
+// setTimeout(function(){
+//    window.location.reload(1);
+// }, 120000);
 
 </script>
 

@@ -16,6 +16,6 @@ class event_patron extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['event_id', 'patron_id', 'carthere', 'carback', 'leavingtime'];
+	protected $fillable = ['event_id', 'patron_id', 'carthere', 'carback', 'leavingtime', 'softDelete'];
 
 }

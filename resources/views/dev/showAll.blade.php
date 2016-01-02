@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8">
-        <div class="panel panel-inverse">
+        <div class="panel panel-default">
             <div class="panel-heading">Event List</div>
             <div class="panel-body">
                 <table id="datatable" class="display" cellspacing="0" width="100%">
@@ -48,13 +48,13 @@
             var hour = timeStamp.getHours();
             var min = timeStamp.getMinutes();
             var day = timeStamp.getDay();
-            if (day = 1) day = 'Sunday';
-            if (day = 2) day = 'Monday';
-            if (day = 3) day = 'Tuesday';
-            if (day = 4) day = 'Wednesday';
-            if (day = 5) day = 'Thursday';
-            if (day = 6) day = 'Friday';
-            if (day = 7) day = 'Saturday';
+            if (day == 0) day = 'Sunday';
+            if (day == 1) day = 'Monday';
+            if (day == 2) day = 'Tuesday';
+            if (day == 3) day = 'Wednesday';
+            if (day == 4) day = 'Thursday';
+            if (day == 5) day = 'Friday';
+            if (day == 6) day = 'Saturday';
             var ampm = 'am';
             if (hour > 12){ 
                 hour = hour-12;
