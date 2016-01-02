@@ -10,7 +10,7 @@ TransportApp is an application used to automatically assign passengers with driv
 
 Nhi: Front and back-end developer
 
-Moi: algorithm designer, UI and UX designer and slave driver
+Moi: Algorithm designer, UI and UX designer and slave driver
 
 Joel: The guy that did ABSOLUTELY NOTHING, EXCEPT provide the server
 
