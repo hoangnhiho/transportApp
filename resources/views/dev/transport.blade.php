@@ -100,12 +100,12 @@
                     <div class="row" id="transportThere{{ceil ($patron3->id/5)}}">
                     <div class="col-md-3">
                         <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronThere{{$counter++}}">
-                        {{$patron3->name}}
+                        <p id="textPatronThere{{$counter-1}}">{{$patron3->name}}</p>
                     </div>
                     @else
                     <div class="col-md-2">
                         <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronThere{{$counter++}}">
-                        {{$patron3->name}}
+                        <p id="textPatronThere{{$counter-1}}">{{$patron3->name}}</p>
                     </div>
                     @endif
                     @if ($patron3->id % 5 == 0)
@@ -130,12 +130,12 @@
                     <div class="row" id="transportBack{{ceil ($patron3->id/5)}}">
                     <div class="col-md-3">
                         <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronBack{{$counter++}}">
-                        {{$patron3->name}}
+                        <p id="textPatronBack{{$counter-1}}">{{$patron3->name}}</p>
                     </div>
                     @else
                     <div class="col-md-2">
                         <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronBack{{$counter++}}">
-                        {{$patron3->name}}
+                        <p id="textPatronBack{{$counter-1}}">{{$patron3->name}}</p>
                     </div>
                     @endif
                     @if ($patron3->id % 5 == 0)
