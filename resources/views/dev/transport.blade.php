@@ -277,7 +277,7 @@ function initMap() {
     travelMode: google.maps.TravelMode.DRIVING,
     unitSystem: google.maps.UnitSystem.METRIC,
     avoidHighways: false,
-    avoidTolls: false
+    avoidTolls: true
   }, function(response, status) {
     if (status !== google.maps.DistanceMatrixStatus.OK) {
       alert('Error was: ' + status);
@@ -286,18 +286,12 @@ function initMap() {
       var destinationList = response.destinationAddresses;
       var outputDiv = document.getElementById('output');
       outputDiv.innerHTML = '';
-      deleteMarkers(markersArray);
 
       var showGeocodedAddressOnMap = function(asDestination) {
         var icon = asDestination ? destinationIcon : originIcon;
         return function(results, status) {
           if (status === google.maps.GeocoderStatus.OK) {
             map.fitBounds(bounds.extend(results[0].geometry.location));
-            markersArray.push(new google.maps.Marker({
-              map: map,
-              position: results[0].geometry.location,
-              icon: icon
-            }));
           } else {
             alert('Geocode was not successful due to: ' + status);
           }
@@ -319,12 +313,7 @@ function initMap() {
     }
   });
 }
-function deleteMarkers(markersArray) {
-  for (var i = 0; i < markersArray.length; i++) {
-    markersArray[i].setMap(null);
-  }
-  markersArray = [];
-}
+
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOSQPgT-givb-HkFVnFBfoA-qP6gr3RKc&signed_in=true&callback=initMap" async defer></script>
 @endsection
