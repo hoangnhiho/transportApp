@@ -8,13 +8,11 @@ TransportApp is an application used to automatically assign passengers with driv
 
 ## Team members
 
-Joel: 
-UX, UI, Visual design, user research and testing, front-end development
+Nhi: Front and back-end development
 
-Nhi:
-Technical lead, front and back-end development, 
+Moi: algorithm designer, UI and UX designer and slave driver
 
-Moi:
-UX, UI, Visual design, user research and testing, documentation, algorithm
+Joel: The guy that did ABSOLUTELY NOTHING, EXCEPT provide the server
+
 
 ## Using Laravel PHP Framework
