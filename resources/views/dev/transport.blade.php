@@ -37,9 +37,10 @@
                     <div class="col-md-1">
                         <!-- <input type="checkbox" id="checkAll">  -->
                     </div>
-                    <div class="col-md-7"><b>Patron's details</b></div>
+                    <div class="col-md-6"><b>Patron's details</b></div>
                     <div class="col-md-2"><b>Pref To</b></div>
                     <div class="col-md-2"><b>Pref Back</b></div>
+                    <div class="col-md-1"><b>Edit</b></div>
                 </div>
                 <hr>
                 @foreach ($patronsInEvent as $patron) 
@@ -47,7 +48,7 @@
                         <div class="col-md-1">
                             <input type="checkbox" id="patron{{$patron->id}}" @if ($patron->softDelete =='1') checked @endif> 
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-6">
                             <label>
                             <img src="{{$patron->picurl}}" alt="patronPic" height="42" width="42"> 
                             <spam>{{$patron->name}} - {{$patron->address}}, {{$patron->suburb}}</spam>
@@ -77,6 +78,11 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="col-md-1">
+                        <a type="button" class="btn btn-default" href="{{url('patron/'.$patron->id)}}">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </a>
+                        </div>
                     </div>
                 @endforeach
 			</div>
@@ -86,7 +92,10 @@
             <spam class="glyphicon glyphicon-plus" aria-hidden="true"></spam>
             Create new Patron
         </button><p></p>
-		<button type="button" class="btn btn-primary" style="width: 100%" id="load">Run Algorithm!</button>
+		<button type="button" class="btn btn-primary" style="width: 100%" id="load">
+            <spam class="glyphicon glyphicon-share" aria-hidden="true"></spam>
+            Run Algorithm!
+        </button>
 
     </div>
 

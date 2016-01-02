@@ -27,6 +27,9 @@ Route::get('test', function()
 //==== Serious Stuff! ====//
 Route::get('event', 'HomeController@getEventList');
 Route::get('event/{eventID}', 'HomeController@show');
+Route::get('patron', 'HomeController@getPetronList');
+Route::get('patron/{patronID}', 'HomeController@showPatron');
+Route::post('editPatron/{patronID}', 'HomeController@editPatron');
 Route::get('getPatronsInEvent/{eventID}', 'HomeController@getPatronsInEvent');
 Route::get('toggleEventPatron/{eventID}/{patronID}/{toggleID}', 'HomeController@toggleEventPatron');
 Route::get('postCarThere/{eventID}/{patronID}/{driverID}', 'HomeController@postCarThere');

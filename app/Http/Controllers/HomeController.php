@@ -3,6 +3,7 @@
 use DB;
 use Request;
 use App\patrons;
+use App\Http\Controllers\Controller;
 
 class HomeController extends Controller {
 
@@ -69,6 +70,17 @@ class HomeController extends Controller {
 	 *
 	 * @return Response
 	 */
+	public function getPetronList()
+	{
+		$patrons = DB::table('patrons')->get();
+		return view('dev.showAllPatrons', ['patrons' => $patrons ]);
+	}
+
+	/**
+	 * Show the application dashboard to the user.
+	 *
+	 * @return Response
+	 */
 	public function show($eventID)
 	{
 		$patrons = DB::table('patrons')->get();
@@ -105,11 +117,33 @@ class HomeController extends Controller {
 				    'softDelete' => '1'
 				]);
 		}
-
-
 		return redirect('event/'.$eventID);
 	}
 
+	/**
+	 * Show the application dashboard to the user.
+	 *
+	 * @return Response
+	 */
+	public function showPatron($patronID)
+	{
+		$patron = DB::table('patrons')->where('id', '=', $patronID)->first();
+		$patrons = DB::table('patrons')->get();
+		return view('dev.showPatron', ['patron' => $patron,'patrons' => $patrons]);
+	}
+	/**
+	 * Show the application dashboard to the user.
+	 *
+	 * @return Response
+	 */
+	public function editPatron(Request $request, $patronID)
+	{
+		$input = Request::all();
+		$patron=patrons::find($patronID);
+		$patron->fill($input);
+		$patron->save();
+		return redirect('patron/'.$patronID);
+	}
 	/**
 	 * Show the application dashboard to the user.
 	 *

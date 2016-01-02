@@ -31,12 +31,13 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="{{ url('/event') }}">UQ7 - Transport</a>
+				<a class="navbar-brand" href="{{ url('/') }}">UQ7 - Transport</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/event') }}">Home</a></li>
+					<li><a href="{{ url('/event') }}">Events</a></li>
+					<li><a href="{{ url('/patron') }}">Patrons</a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">

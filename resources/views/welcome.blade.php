@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Laravel</title>
+		<title>UQ7-Transport</title>
 		
 		<link href='//fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
 
@@ -35,13 +35,25 @@
 			.quote {
 				font-size: 24px;
 			}
+			a {
+				color:#B0BEC5;
+				text-decoration:none;
+			    border-radius: 5px;
+			    border: 2px solid #B0BEC5;
+			    padding: 0px 3px 3px 3px;
+			}
+			a:hover {
+				background-color: #B0BEC5; 
+				color:white;
+			}
 		</style>
 	</head>
 	<body>
 		<div class="container">
 			<div class="content">
 				<div class="title">Transport App. Coming Soon!</div>
-				<div class="quote">{{ Inspiring::quote() }}</div>
+				<!-- <div class="quote">{{ Inspiring::quote() }}</div></br> -->
+				<div class="quote"><a href="{{url('/event')}}">Demo Me!</a></div>
 			</div>
 		</div>
 	</body>
