@@ -65,6 +65,24 @@ class HomeController extends Controller {
 		$events = DB::table('events')->get();
 		return view('dev.showAll', ['events' => $events, ]);
 	}
+
+	/**
+	 * Show the application dashboard to the user.
+	 *
+	 * @return Response
+	 */
+	public function generateNearbySet($eventID)
+	{
+		$patrons = DB::table('patrons')->get();
+		$events = DB::table('events')->get();
+		$nearbySets = DB::table('nearby_sets')->select('nearbyset')->get();
+		$patronsInEvent = DB::table('event_patron')
+			->where('event_id', $eventID)
+	    	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
+			->get();
+		return view('dev.generateNearbySet', ['eventID' => $eventID, 'patronsInEvent' => $patronsInEvent, 'events' => $events, 'nearbySets' => $nearbySets]);
+	}
+
 	/**
 	 * Show the application dashboard to the user.
 	 *
@@ -90,10 +108,19 @@ class HomeController extends Controller {
 			->where('event_id', $eventID)
 	    	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
 			->get();
-		
 		return view('dev.transport', ['eventID' => $eventID, 'patronsInEvent' => $patronsInEvent, 'events' => $events, 'nearbySets' => $nearbySets]);
 	}
-
+	/**
+	 * Show the application dashboard to the user.
+	 *
+	 * @return Response
+	 */
+	public function createNearbySet($eventID, $nearbyset)
+	{
+		$nearbyset = str_replace("-",",",$nearbyset);
+		DB::table('nearby_sets')->insert(['nearbyset' => $nearbyset]);
+		return redirect('generateNearbySet/'.$eventID);
+	}
 	/**
 	 * Show the application dashboard to the user.
 	 *

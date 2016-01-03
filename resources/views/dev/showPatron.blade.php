@@ -41,14 +41,9 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-md-4 control-label">Nearby</label>
+                    <label class="col-md-4 control-label">Post Code</label>
                     <div class="col-md-6">
-                      <select class="form-control" id="sel1" name="nearby">
-                          <option>null</option>
-                        @foreach ($patrons as $patron1) 
-                          <option  @if($patron1->name == $patron->nearby) selected @endif>{{$patron1->name}}</option>
-                        @endforeach
-                      </select>
+                      <input type="text" class="form-control" name="postcode" value="{{$patron->postcode}}">
                     </div>
                   </div>
 

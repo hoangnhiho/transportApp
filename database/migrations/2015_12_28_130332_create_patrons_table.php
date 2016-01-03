@@ -16,10 +16,10 @@ class CreatePatronsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('name');
-			$table->string('picurl');
+			$table->string('picurl')->default('http://i2.wp.com/lh6.googleusercontent.com/-St077kPaI3A/AAAAAAAAAAI/AAAAAAAAAE4/nshp34I8yjM/photo.jpg?w=250');
 			$table->string('address');
 			$table->string('suburb');
-			$table->string('nearby')->nullable();//patron that is nearby
+			$table->string('postcode',4);
 			$table->timestamps();
 		});
 	}
