@@ -6,9 +6,21 @@
         width: 25px;
         height: 25px;
     }
+    @media (max-width : 400px) {
+        input[type='checkbox'] {
+            width: 45px;
+            height: 45px;
+        }
+        .patronDetailRow{
+            min-height: 55px;
+        }
+        .eventColumn{
+            display:none;
+        }
+    }
 </style>
 <div class='row'>
-	<div class="col-md-2">
+	<div class="col-md-2 eventColumn">
 		<div class="panel panel-default">
 			<div class="panel-heading">Events</div>
 			<div class="panel-body">
@@ -32,31 +44,34 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
                 <div class="row" style="padding:0px 15px">
-                Patrons
-                <button type="button" class="btn btn-success btn-sm pull-right" id="refreshBtn" style="padding: 2px 5px 0px 5px;">
+                <a data-toggle="collapse" href="#patronList">Patrons</a>
+                <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#createPatronModal" style="padding: 2px 5px 0px 5px; margin-left:3px;">
+                    <spam class="glyphicon glyphicon-plus" aria-hidden="true"></spam>
+                </button>
+                <button type="button" class="btn btn-success btn-sm pull-right" id="refreshBtn" style="padding: 2px 5px 0px 5px; margin-left:3px;">
                     <spam class="glyphicon glyphicon-refresh" aria-hidden="true"></spam>
                 </button>
                 </div>
             </div>
-			<div class="panel-body" id='patronList'>
+			<div class="panel-body collapse in" id='patronList'>
                 <div class="row">
                     <div class="col-md-1">
                         <!-- <input type="checkbox" id="checkAll">  -->
                     </div>
-                    <div class="col-md-5"><b>Patron's details</b></div>
-                    <div class="col-md-3"><b>Pref To</b></div>
-                    <div class="col-md-3"><b>Pref Back</b></div>
+                    <div class="col-xs-12 col-md-5"><b>Patron's details</b></div>
+                    <div class="col-xs-6 col-md-3"><b>Pref To</b></div>
+                    <div class="col-xs-6 col-md-3"><b>Pref Back</b></div>
                 </div>
                 <hr style="margin-top: 0px; margin-bottom: 10px;">
                 @foreach ($patronsInEvent as $patron) 
                     <div class="row">
-                        <div class="col-md-1">
+                        <div class="col-xs-2 col-md-1">
                             <input type="checkbox" id="patron{{$patron->id}}" @if ($patron->softDelete =='1') checked @endif> 
                         </div>
-                        <div class="col-md-1">
-                            <img src="{{$patron->picurl}}" alt="patronPic" height="42" width="42"> 
+                        <div class="col-xs-2 col-md-1">
+                            <img src="{{$patron->picurl}}" alt="patronPic" class="img-thumbnail" style="width: 100%"> 
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-xs-8 col-md-4 patronDetailRow">
                             <div class="row">
                                 <div class="col-md-12">
                                     <a href="{{url('patron/'.$patron->id)}}">{{$patron->name}}</a>
@@ -66,7 +81,7 @@
                                 <div class="col-md-12" style="font-size: .8em;">{{$patron->address}}, {{$patron->suburb}}</div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-xs-6 col-md-3">
                             <select class="form-control carthereOptions">
                                 <option id="carthere{{$patron->id}}-none" @if($patron->carthere == 'none') selected @endif>none</option>
                                 <option id="carthere{{$patron->id}}-any" @if($patron->carthere == 'any') selected @endif>any</option>
@@ -78,7 +93,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-xs-6 col-md-3">
                             <select class="form-control carbackOptions">
                                 <option selected="selected" id="carback{{$patron->id}}-none" @if($patron->carback == 'none') selected @endif>none</option>
                                 <option id="carback{{$patron->id}}-any" @if($patron->carback == 'any') selected @endif>any</option>
@@ -96,11 +111,7 @@
 			</div>
 		</div>
 
-        <button type="button" class="btn btn-primary" style="width: 100%" data-toggle="modal" data-target="#createPatronModal">
-            <spam class="glyphicon glyphicon-plus" aria-hidden="true"></spam>
-            Create new Patron
-        </button><p></p>
-		<button type="button" class="btn btn-primary" style="width: 100%" id="load">
+		<button type="button" class="btn btn-primary" style="width: 100%;display:none;" id="load">
             <spam class="glyphicon glyphicon-share" aria-hidden="true"></spam>
             Run Algorithm!
         </button>
@@ -109,18 +120,18 @@
 
 	<div class="col-md-3">
 		<div class="panel panel-default">
-			<div class="panel-heading">Transport - There</div>
-            <div class="panel-body">
+			<div class="panel-heading"><a data-toggle="collapse" href="#transportThereList">Transport - There</a></div>
+            <div class="panel-body collapse in" id="transportThereList">
                 <div style="display:none">{{$counter = 1}}</div>
                 @foreach ($patronsInEvent as $patron3) 
                     @if ($patron3->id % 5 == 1)
                     <div class="row" id="transportThere{{ceil ($patron3->id/5)}}">
-                    <div class="col-md-3">
+                    <div class="col-xs-3 col-md-3">
                         <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronThere{{$counter++}}" style="display: none">
                         <p id="textPatronThere{{$counter-1}}" style="display: none">{{$patron3->name}}</p>
                     </div>
                     @else
-                    <div class="col-md-2">
+                    <div class="col-xs-2 col-md-2">
                         <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronThere{{$counter++}}" style="display: none">
                         <p id="textPatronThere{{$counter-1}}" style="display: none">{{$patron3->name}}</p>
                     </div>
@@ -140,18 +151,18 @@
 
     <div class="col-md-3">
         <div class="panel panel-default">
-            <div class="panel-heading">Transport - Back</div>
-            <div class="panel-body">
+            <div class="panel-heading"><a data-toggle="collapse" href="#transportBackList">Transport - Back</a></div>
+            <div class="panel-body collapse in" id="transportBackList">
                 <div style="display:none">{{$counter = 1}}</div>
                 @foreach ($patronsInEvent as $patron3) 
                     @if ($patron3->id % 5 == 1)
                     <div class="row" id="transportBack{{ceil ($patron3->id/5)}}">
-                    <div class="col-md-3">
+                    <div class="col-xs-3 col-md-3">
                         <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronBack{{$counter++}}" style="display: none">
                         <p id="textPatronBack{{$counter-1}}" style="display: none">{{$patron3->name}}</p>
                     </div>
                     @else
-                    <div class="col-md-2">
+                    <div class="col-xs-2 col-md-2">
                         <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronBack{{$counter++}}" style="display: none">
                         <p id="textPatronBack{{$counter-1}}" style="display: none">{{$patron3->name}}</p>
                     </div>
