@@ -6,7 +6,7 @@
         width: 25px;
         height: 25px;
     }
-    @media (max-width : 400px) {
+    @media (max-width : 430px) {
         input[type='checkbox'] {
             width: 45px;
             height: 45px;
@@ -20,6 +20,9 @@
         .panel-body{
             padding-left:23px;
             padding-right:23px;
+        }
+        .displayPic{
+            max-width: 60px;
         }
     }
 </style>
@@ -72,7 +75,7 @@
                         <div class="col-xs-2 col-md-1">
                             <input type="checkbox" id="patron{{$patron->id}}" @if ($patron->softDelete =='1') checked @endif> 
                         </div>
-                        <div class="col-xs-2 col-md-1">
+                        <div class="col-xs-2 col-md-1 displayPic">
                             <img src="{{$patron->picurl}}" alt="patronPic" class="img-thumbnail" style="width: 100%"> 
                         </div>
                         <div class="col-xs-8 col-md-4 patronDetailRow">
