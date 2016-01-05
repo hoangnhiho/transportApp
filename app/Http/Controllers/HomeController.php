@@ -76,11 +76,12 @@ class HomeController extends Controller {
 		$patrons = DB::table('patrons')->get();
 		$events = DB::table('events')->get();
 		$nearbySets = DB::table('nearby_sets')->select('nearbyset')->get();
+		$nearbySetsID = DB::table('nearby_sets')->select('id')->get();
 		$patronsInEvent = DB::table('event_patron')
 			->where('event_id', $eventID)
 	    	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
 			->get();
-		return view('dev.generateNearbySet', ['eventID' => $eventID, 'patronsInEvent' => $patronsInEvent, 'events' => $events, 'nearbySets' => $nearbySets]);
+		return view('dev.generateNearbySet', ['eventID' => $eventID, 'patronsInEvent' => $patronsInEvent, 'events' => $events, 'nearbySets' => $nearbySets, 'nearbySetsID'=>$nearbySetsID]);
 	}
 
 	/**

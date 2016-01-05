@@ -62,12 +62,15 @@
     <div class="panel panel-default">
       <div class="panel-heading">Nearby Sets</div>
         <div class="panel-body">
+        <?php $counter=0 ?>
+            
           @foreach ($nearbySets as $nearbySet)
-            <div class="row">
-            <!-- ========== This code is FUCKED up ============ -->
+            <!-- ========== This code is CRAZY ============ -->
+            <div class="row" id="nearbySet{{$nearbySetsID[$counter]->id}}">
+            <?php $counter++ ?>
             <?php $nearbyset='' ?>
             @foreach ($nearbySet as $char)<?php $nearbyset = $nearbyset . $char; ?> @endforeach <?php $nearbys = explode(",", $nearbyset); ?>
-            <!-- ========== This code is FUCKED up ============ -->
+            <!-- ========== This code is CRAZY ============ -->
             @foreach ($nearbys as $nearby)
               @foreach ($patronsInEvent as $patron)
                 @if ($nearby == $patron->id) 
