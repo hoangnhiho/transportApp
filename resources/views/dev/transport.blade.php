@@ -19,6 +19,7 @@
         }
         .panel-body{
             padding-left:23px;
+            padding-right:23px;
         }
     }
 </style>
