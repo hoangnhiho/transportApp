@@ -17,6 +17,9 @@
         .eventColumn{
             display:none;
         }
+        .panel-body{
+            padding-left:23px;
+        }
     }
 </style>
 <div class='row'>
