@@ -281,13 +281,16 @@ $( document ).ready(function() {
                 $('#imgPatronBack'+i).hide();
                 $('#textPatronBack'+i).hide();
             }
-            console.log(JSON.stringify(arrayPatron));
-            console.log(JSON.stringify(arrayNearBySet));
+            //console.log(JSON.stringify(arrayPatron));
+            //console.log(JSON.stringify(arrayNearBySet));
 
             var plan = runTransportAlgorithm(arrayPatron, arrayNearBySet);
             var planThere = plan[0];
             var planBack = plan[1];
-            console.log(plan);
+            //console.log(plan);
+            console.log(planThere);
+            console.log(planBack);
+
             var counter = 1;
             planThere.forEach(function(car) {
                 car.forEach(function(passenger){
@@ -334,6 +337,8 @@ function runTransportAlgorithm(patrons, nearbySetsList){
 
     var carsThere = new Array();
     var carsBack = new Array();
+    var walkingThere = new Array();
+    var walkingBack = new Array();
 
     processSuburbMappings(patrons);
 
@@ -382,81 +387,148 @@ function runTransportAlgorithm(patrons, nearbySetsList){
 
     removeProcessedPassengers(passengersBack, carsBack);
 
-    processPlan(carsThere, passengersThere, nearbySetsList);
-    processPlan(carsBack, passengersBack, nearbySetsList);
-    return new Array(carsThere, carsBack);
+    processPlan(patrons, carsThere, walkingThere, passengersThere, nearbySetsList);
+    processPlan(patrons, carsBack, walkingBack, passengersBack, nearbySetsList);
+    return new Array(carsThere, carsBack, walkingThere, walkingBack);
 }
 
 
-function processPlan(carsList, passengersList, nearbySetsList){
+
+function processPlan(patronsList, carsList, walkingList, passengersList, nearbySetsList){
     /* Remove the nearby sets that are not relevant to the current transport plan 
     this means that there are not at least two patrons of the nearby set that are attending the event. */
+    var relevantNearbySets = 
+        processNearbySetsFromPassengerList(nearbySetsList, patronsList);
 
-    relevantNearbySets = 
-        processNearbySetsFromPassengerList(nearbySetsList, passengersList);
-    
-    matchedNearbySets = new Array();
-
-    for(var i = 0; i < relevantNearbySets.length; i++){
-        if(relevantNearbySets[i].length == 2){
-            for(var j = i + 1; j < relevantNearbySets.length; j++){
-                if(relevantNearbySets[j].length == 2 
-                    && relevantNearbySets[i].suburb == relevantNearbySets[j].suburb){
-                    matchedNearbySets.push(relevantNearbySets[i].concat(relevantNearbySets[j]));
-                    relevantNearbySets.splice(j, 1);
-                }
-            }
-        } else {
-            matchedNearbySets.push(relevantNearbySets[i]);
-        }
-    }
+    //console.log(relevantNearbySets);
 
     /* Process the nearby sets into their cars */
-    for(var i = 0; i < matchedNearbySets.length; i++){
-        var bestDriver = calculateBestDriver(carsList, matchedNearbySets[i][0]);
-        for(var j = 0; j < matchedNearbySets[i].length; j++){
-            carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)].push(
-                matchedNearbySets[i][j]);
+    for(var i = 0; i < relevantNearbySets.length; i++){
+        var bestDriver = calculateBestDriver(carsList, relevantNearbySets[i][0], relevantNearbySets[i].length);
+        for(var j = 0; j < relevantNearbySets[i].length; j++){
+            if(!isDriver(carsList, relevantNearbySets[i][j])){
+                addToPlan(carsList, walkingList, relevantNearbySets[i][j], driverIDIndexInCarList(carsList, bestDriver.patron_id));
+            }
         }   
     }
 
     removeProcessedPassengers(passengersList, carsList);
 
-    /* Process passengers which share the same suburb as a driver */
+    /* Separate passengers into new arrays */
+    suburbSeparatedPassengersList = new Array();
     for(var i = 0; i < passengersList.length; i++){
-
+        var processed = false;
+        for(var j = 0; j < suburbSeparatedPassengersList.length; j++){
+            if(suburbSeparatedPassengersList.length > 0){
+                if(suburbSeparatedPassengersList[j][0].suburb == passengersList[i].suburb){
+                    suburbSeparatedPassengersList[j].push(passengersList[i]);
+                    processed = true;
+                }   
+            } else {
+                suburbSeparatedPassengersList.push(new Array(passengersList[i]));
+            }
+        }
+        if(!processed){
+            suburbSeparatedPassengersList.push(new Array(passengersList[i]));
+        }
     }
 
-    /* Process the remaining passengers into their cars */
-    for(var i = 0; i < passengersList.length; i++){
-        var bestDriver = calculateBestDriver(carsList, passengersList[i]);
-        carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)].push(
-            passengersList[i]);
+    /* Process passengers which share the same suburb as a driver */
+    for(var i = 0; i < suburbSeparatedPassengersList.length; i++){
+        for(var j = 0; j < suburbSeparatedPassengersList[i].length; j++){
+            for(var k = 0; k < carsList.length; k++){
+                var thisthing = suburbs[String(suburbSeparatedPassengersList[i][j].suburb).concat(carsList[k][0].suburb)];
+                var sub1 = suburbSeparatedPassengersList[i][j].suburb;
+                var sub2 = carsList[k][0].suburb;
+                if(suburbs[String(suburbSeparatedPassengersList[i][j].suburb).concat(carsList[k][0].suburb)] == 1){
+                    if(carsList[k].length < 5){
+                        addToPlan(carsList, walkingList, suburbSeparatedPassengersList[i][j], k);
+                        break;
+                    }
+                }
+            }   
+        }
     }
 
     removeProcessedPassengers(passengersList, carsList);
+
+    /* Process the remaining passengers into their cars */
+    for(var i = 0; i < passengersList.length; i++){
+        var bestDriver = calculateBestDriver(carsList, passengersList[i], 1);
+        addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id));
+    }
+
+    removeProcessedPassengers(passengersList, carsList);
+
 }
 
 /* Takes a set of cars and a passenger, returns the best driver for the 
 passenger. If the most efficient driver has a full car, then the next most efficient 
 driver that does not have a full car is the best driver. */
-function calculateBestDriver(cars, patron){
+function calculateBestDriver(cars, patron, numPatrons){
     var i = 0;
     var bestDriver = cars[i][0];
     var currentSuburbPairRank = suburbs[String(patron.suburb).concat(cars[i][0].suburb)];
-    while(cars[i].length > 4){
+    while(cars[i].length > 4 - (numPatrons - 1)){
         i++;
+        if(i >= cars.length){
+            return -1;
+        }
         bestDriver = cars[i][0];
         currentSuburbPairRank = suburbs[String(patron.suburb).concat(cars[i][0].suburb)];
     }
     for(; i < cars.length; i++){
         if(suburbs[String(patron.suburb).concat(cars[i][0].suburb)] < currentSuburbPairRank
-            && cars[i].length < 5){
+            && cars[i].length < 5 - (numPatrons - 1)){
             currentSuburbPairRank = suburbs[String(patron.suburb).concat(cars[i][0].suburb)];
             bestDriver = cars[i][0];
         }
     }
     return bestDriver;
+}
+
+function isDriver(cars, patron){
+    for(var i = 0; i < cars.length; i++){
+        if(cars[i][0].patron_id == patron.patron_id){
+            return true;
+        }
+    }
+    return false;
+}
+
+function seatsRemaining(cars){
+    sumOfSeats = 0;
+    for(var i = 0; i < cars.length; i++){
+        sumOfSeats = sumOfSeats + cars[i].length;
+    }
+    if(sumOfSeats >= (cars.length * 5)){
+        return false;
+    }
+    return true;
+}
+
+function addToPlan(cars, walking, passenger, carIndex){
+    if(seatsRemaining(cars)){
+        if(carIndex != -1 && cars[carIndex].length != 5){
+            if(!planContains(cars, passenger)){
+                cars[carIndex].push(passenger); 
+            }
+            return false;
+        }
+    } else {
+        walking.push(passenger);
+    }
+}
+
+function planContains(cars, passenger){
+    for(var i = 0; i < cars.length; i++){
+        for(var j = 0; j < cars[i].length; j++){
+            if(cars[i][j].patron_id == passenger.patron_id){
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 function removeProcessedPassengers(passengersList, carsList){
@@ -546,28 +618,28 @@ function driverIDIndexInCarList(cars, driverId){
 the algorithm */
 function processSuburbMappings(patrons){
     for(var i = 0; i < patrons.length; i++){
-        if(patrons[i].suburb == "Stlucia"){
+        if(patrons[i].suburb == "stlucia"){
             patrons[i].suburb = "SL";
-        } else if(patrons[i].suburb == "Toowong"){
+        } else if(patrons[i].suburb == "toowong"){
             patrons[i].suburb = "TW";
-        } else if(patrons[i].suburb == "Taringa"){
+        } else if(patrons[i].suburb == "taringa"){
             patrons[i].suburb = "TR";
-        } else if(patrons[i].suburb == "Auchenflower"){
+        } else if(patrons[i].suburb == "auchenflower"){
             patrons[i].suburb = "AU";
-        } else if(patrons[i].suburb == "Indooroopilly"){
+        } else if(patrons[i].suburb == "indooroopilly"){
             patrons[i].suburb = "IN";
-        } else if(patrons[i].suburb == "Chapelhill"){
+        } else if(patrons[i].suburb == "chapelhill"){
             patrons[i].suburb = "CA";
-        } else if(patrons[i].suburb == "Kelvingrove"){
+        } else if(patrons[i].suburb == "kelvingrove"){
             patrons[i].suburb = "KA";
-        } else if(patrons[i].suburb == "Woolongabba" || patrons[i].suburb == "Duttonpark"
-            || patrons[i].suburb == "Fairfield" || patrons[i].suburb == "Annerley"){
+        } else if(patrons[i].suburb == "woolongabba" || patrons[i].suburb == "duttonpark"
+            || patrons[i].suburb == "fairfield" || patrons[i].suburb == "annerley"){
             patrons[i].suburb = "WA";
-        } else if(patrons[i].suburb == "Oxley" || patrons[i].suburb == "Sherwood"
-            || patrons[i].suburb == "Corinda"){
+        } else if(patrons[i].suburb == "oxley" || patrons[i].suburb == "sherwood"
+            || patrons[i].suburb == "corinda"){
             patrons[i].suburb = "OA";
-        } else if(patrons[i].suburb == "Sunnybank" || patrons[i].suburb == "Willawong"
-            || patrons[i].suburb == "Logan"){
+        } else if(patrons[i].suburb == "sunnybank" || patrons[i].suburb == "willawong"
+            || patrons[i].suburb == "logan"){
             patrons[i].suburb = "SA";
         }
     }
