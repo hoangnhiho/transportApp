@@ -40,14 +40,9 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="col-md-4 control-label">Nearby</label>
+            <label class="col-md-4 control-label">PostCode</label>
             <div class="col-md-6">
-              <select class="form-control" id="sel1" name="nearby">
-                  <option>null</option>
-                @foreach ($patronsInEvent as $patron4) 
-                  <option>{{$patron4->name}}</option>
-                @endforeach
-              </select>
+              <input type="text" class="form-control" name="postcode">
             </div>
           </div>
 
