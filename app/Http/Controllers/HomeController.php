@@ -182,6 +182,18 @@ class HomeController extends Controller {
 		$patrons = DB::table('patrons')->get();
 		return view('dev.showPatron', ['patron' => $patron,'patrons' => $patrons]);
 	}
+
+	/**
+	 * Show the application dashboard to the user.
+	 *
+	 * @return Response
+	 */
+	public function getModalPatron($patronID)
+	{
+		$patron = DB::table('patrons')->where('id', '=', $patronID)->first();
+		$patrons = DB::table('patrons')->get();
+		return view('dev.showPatronModal', ['patron' => $patron,'patrons' => $patrons]);
+	}
 	/**
 	 * Show the application dashboard to the user.
 	 *

@@ -132,12 +132,12 @@
                     @if ($patron3->id % 5 == 1)
                     <div class="row" id="transportThere{{ceil ($patron3->id/5)}}">
                     <div class="col-xs-3 col-md-3">
-                        <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronThere{{$counter++}}" style="display: none">
+                        <a data-toggle="modal" id="modalPatronThere{{$counter}}" href="{{url('getModalPatron/1')}}" data-target="#patronModal"><img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronThere{{$counter++}}" style="display: none"></a>
                         <p id="textPatronThere{{$counter-1}}" style="display: none">{{$patron3->name}}</p>
                     </div>
                     @else
                     <div class="col-xs-2 col-md-2">
-                        <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronThere{{$counter++}}" style="display: none">
+                        <a data-toggle="modal" id="modalPatronThere{{$counter}}" href="{{url('getModalPatron/1')}}" data-target="#patronModal"><img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronThere{{$counter++}}" style="display: none"></a>
                         <p id="textPatronThere{{$counter-1}}" style="display: none; height:28px;">{{$patron3->name}}</p>
                     </div>
                     @endif
@@ -177,12 +177,12 @@
                     @if ($patron3->id % 5 == 1)
                     <div class="row" id="transportBack{{ceil ($patron3->id/5)}}">
                     <div class="col-xs-3 col-md-3">
-                        <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronBack{{$counter++}}" style="display: none">
+                        <a data-toggle="modal" id="modalPatronBack{{$counter}}" href="{{url('getModalPatron/1')}}" data-target="#patronModal"><img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronBack{{$counter++}}" style="display: none"></a>
                         <p id="textPatronBack{{$counter-1}}" style="display: none">{{$patron3->name}}</p>
                     </div>
                     @else
                     <div class="col-xs-2 col-md-2">
-                        <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronBack{{$counter++}}" style="display: none">
+                        <a data-toggle="modal" id="modalPatronBack{{$counter}}" href="{{url('getModalPatron/1')}}" data-target="#patronModal"><img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronBack{{$counter++}}" style="display: none"></a>
                         <p id="textPatronBack{{$counter-1}}" style="display: none; height:28px;">{{$patron3->name}}</p>
                     </div>
                     @endif
@@ -225,15 +225,16 @@ suburbs = {
     TWSL:2, TWTW:1, TWTR:2, TWAU:2, TWIN:3, TWCA:4, TWKA:4, TWWA:5, TWOA:6, TWSA:6, 
     TRSL:2, TRTW:2, TRTR:1, TRAU:3, TRIN:2, TRCA:3, TRKA:5, TRWA:6, TROA:5, TRSA:7,
     AUSL:3, AUTW:2, AUTR:2, AUAU:1, AUIN:4, AUCA:5, AUKA:3, AUWA:4, AUOA:7, AUSA:5,
-    INSL:3, INTW:3, INTR:2, INAU:4, ININ:1, INCA:2, INKA:6, INWA:7, INOA:3, INSA:6, 
+    INSL:3, INTW:3, INTR:2, INAU:4, ININ:1, INCA:2, INKA:6, INWA:7, INOA:4, INSA:6, 
     CASL:4, CATW:4, CATR:3, CAAU:5, CAIN:2, CACA:1, CAKA:7, CAWA:8, CAOA:4, CASA:9, 
     KASL:5, KATW:5, KATR:5, KAAU:3, KAIN:6, KACA:7, KAKA:1, KAWA:3, KAOA:7, KASA:5, 
     WASL:6, WATW:5, WATR:6, WAAU:4, WAIN:7, WACA:8, WAKA:3, WAWA:1, WAOA:8, WASA:3, 
-    OASL:6, OATW:6, OATR:5, OAAU:7, OAIN:3, OACA:4, OAKA:7, OAWA:8, OAOA:1, OASA:4, 
+    OASL:6, OATW:6, OATR:5, OAAU:7, OAIN:4, OACA:4, OAKA:7, OAWA:8, OAOA:1, OASA:4, 
     SASL:7, SATW:6, SATR:7, SAAU:5, SAIN:6, SACA:9, SAKA:5, SAWA:3, SAOA:4, SASA:1 
 };
 $( document ).ready(function() {
 	//Page load settings
+    var URL = window.location.origin;
 	var eventID = {!!$eventID!!};
     @if (isset($publicShow))
         $('.eventColumn').hide();
@@ -251,7 +252,9 @@ $( document ).ready(function() {
     }
 
     runAlgorithm();
-
+    $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+    });
     //=== Get eventID ===//
     $('#refreshBtn').on('click', function() {
         window.location.reload(1);
@@ -339,7 +342,7 @@ $( document ).ready(function() {
             var walkThere = plan[2];
             var walkBack = plan[3];
 
-            //console.log(plan);
+            console.log(plan);
             //console.log(walkThere);
             //console.log(planBack);
 
@@ -349,6 +352,7 @@ $( document ).ready(function() {
                     $('#imgPatronThere'+counter).show();
                     $('#textPatronThere'+counter).show();
                     $('#imgPatronThere'+counter).attr('src', passenger.picurl);
+                    $('#modalPatronThere'+counter).attr('href', URL+'/getModalPatron/'+passenger.id);
                     $('#textPatronThere'+counter).html(passenger.name);
                     counter++;
                 });
@@ -372,6 +376,7 @@ $( document ).ready(function() {
                     $('#imgPatronBack'+counter).show();
                     $('#textPatronBack'+counter).show();
                     $('#imgPatronBack'+counter).attr('src', passenger.picurl);
+                    $('#modalPatronBack'+counter).attr('href', URL+'/getModalPatron/'+passenger.id);
                     $('#textPatronBack'+counter).html(passenger.name);
                     counter++;
                 });
@@ -457,14 +462,14 @@ function runTransportAlgorithm(patrons, nearbySetsList){
 
     removeProcessedPassengers(passengersBack, carsBack);
 
-    processPlan(patrons, carsThere, walkingThere, passengersThere, nearbySetsList);
-    processPlan(patrons, carsBack, walkingBack, passengersBack, nearbySetsList);
+    processPlan(patrons, carsThere, walkingThere, passengersThere, nearbySetsList, "there");
+    processPlan(patrons, carsBack, walkingBack, passengersBack, nearbySetsList, "back");
     return new Array(carsThere, carsBack, walkingThere, walkingBack);
 }
 
 
 
-function processPlan(patronsList, carsList, walkingList, passengersList, nearbySetsList){
+function processPlan(patronsList, carsList, walkingList, passengersList, nearbySetsList, direction){
     /* Remove the nearby sets that are not relevant to the current transport plan 
     this means that there are not at least two patrons of the nearby set that are attending the event. */
     var relevantNearbySets = 
@@ -477,7 +482,7 @@ function processPlan(patronsList, carsList, walkingList, passengersList, nearbyS
         var bestDriver = calculateBestDriver(carsList, relevantNearbySets[i][0], relevantNearbySets[i].length);
         for(var j = 0; j < relevantNearbySets[i].length; j++){
             if(!isDriver(carsList, relevantNearbySets[i][j])){
-                addToPlan(carsList, walkingList, relevantNearbySets[i][j], driverIDIndexInCarList(carsList, bestDriver.patron_id));
+                addToPlan(carsList, walkingList, relevantNearbySets[i][j], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
             }
         }   
     }
@@ -512,7 +517,7 @@ function processPlan(patronsList, carsList, walkingList, passengersList, nearbyS
                 var sub2 = carsList[k][0].suburb;
                 if(suburbs[String(suburbSeparatedPassengersList[i][j].suburb).concat(carsList[k][0].suburb)] == 1){
                     if(carsList[k].length < 5){
-                        addToPlan(carsList, walkingList, suburbSeparatedPassengersList[i][j], k);
+                        addToPlan(carsList, walkingList, suburbSeparatedPassengersList[i][j], k, direction);
                         break;
                     }
                 }
@@ -523,13 +528,38 @@ function processPlan(patronsList, carsList, walkingList, passengersList, nearbyS
     removeProcessedPassengers(passengersList, carsList);
 
     /* Process the remaining passengers into their cars */
-    for(var i = 0; i < passengersList.length; i++){
+    /*for(var i = 0; i < passengersList.length; i++){
         var bestDriver = calculateBestDriver(carsList, passengersList[i], 1);
-        addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id));
+        addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
+    }*/
+    /*for(var currentDistantRank = 0; currentDistantRank < 9; currentDistantRank++){
+        for(var i = 0; i < passengersList.length; i++){
+            var bestDriver = calculateBestDriver(carsList, passengersList[i], 1);
+            addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
+        }
+    }*/
+    for(var currentDistantRank = 0; currentDistantRank < 12; currentDistantRank++){
+        
+        for(var i = 0; i < passengersList.length; i++){
+            var bestDriver = calculateBestDriver(carsList, passengersList[i], 1);
+            var thisss = suburbs[String(bestDriver.suburb).concat(passengersList[i].suburb)];
+            var thisscode = String(bestDriver.suburb).concat(passengersList[i].suburb);
+            var passenger_name = passengersList[i].name;
+            var best_drivername = bestDriver.name;
+            if(suburbs[String(bestDriver.suburb).concat(passengersList[i].suburb)] == currentDistantRank){
+                addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
+            }
+        }
     }
 
     removeProcessedPassengers(passengersList, carsList);
 
+    for(var i = 0; i < passengersList.length; i++){
+        var bestDriver = calculateBestDriver(carsList, passengersList[i], 1);
+        addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
+    }
+    
+    removeProcessedPassengers(passengersList, carsList);
 }
 
 /* Takes a set of cars and a passenger, returns the best driver for the 
@@ -577,25 +607,40 @@ function seatsRemaining(cars){
     return true;
 }
 
-function addToPlan(cars, walking, passenger, carIndex){
+function addToPlan(cars, walking, passenger, carIndex, direction){
     if(seatsRemaining(cars)){
         if(carIndex != -1 && cars[carIndex].length != 5){
-            if(!planContains(cars, passenger)){
-                cars[carIndex].push(passenger); 
+            if(!planContains(cars, walking, passenger)){
+                if((direction == "there" && passenger.carthere != "none")
+                    || (direction == "back" && passenger.carback != "none")){
+                    cars[carIndex].push(passenger); 
+                }
             }
             return false;
         }
     } else {
-        walking.push(passenger);
+        if(!planContains(cars, walking, passenger)){
+            if((direction == "there" && passenger.carthere != "none")
+                || (direction == "back" && passenger.carback != "none")){
+                walking.push(passenger);
+            }
+        }
+        return false;
+        //walking.push(passenger);
     }
 }
 
-function planContains(cars, passenger){
+function planContains(cars, walking, passenger){
     for(var i = 0; i < cars.length; i++){
         for(var j = 0; j < cars[i].length; j++){
             if(cars[i][j].patron_id == passenger.patron_id){
                 return true;
             }
+        }
+    }
+    for(var i = 0; i < walking.length; i++){
+        if(walking[i].patron_id == passenger.patron_id){
+            return true;
         }
     }
     return false;

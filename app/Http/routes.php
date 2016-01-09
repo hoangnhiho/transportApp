@@ -41,6 +41,8 @@ Route::get('postCarThere/{eventID}/{patronID}/{driverID}', 'HomeController@postC
 Route::get('postCarBack/{eventID}/{patronID}/{driverID}', 'HomeController@postCarBack');
 Route::post('createPatron/{eventID}', 'HomeController@createPatron');
 
+Route::get('getModalPatron/{patronID}', 'HomeController@getModalPatron');
+
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

@@ -37,13 +37,13 @@
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/event') }}">Events</a></li>
+					<li><a href="{{ url('/event/1') }}">LifeGroup Transport</a></li>
 					<li><a href="{{ url('/patron') }}">Patrons</a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
 					@if (Auth::guest())
-						<li><a href="{{ url('/eventAdmin/1') }}">Admin Events</a></li>
+						<li><a href="{{ url('/eventAdmin/1') }}">Admin Page</a></li>
 					@else
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
