@@ -54,7 +54,7 @@
 			<div class="content">
 				<div class="title">Transport App. Coming Soon!</div>
 				<!-- <div class="quote">{{ Inspiring::quote() }}</div></br> -->
-				<div class="quote"><a href="{{url('/event/1')}}">Demo Me!</a></div>
+				<div class="quote"><a href="{{url('/event/1')}}">LifeGroup Transport</a></div>
 			</div>
 		</div>
 	</body>
