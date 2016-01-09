@@ -71,17 +71,13 @@ class HomeController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function generateNearbySet($eventID)
+	public function generateNearbySet()
 	{
 		$patrons = DB::table('patrons')->get();
 		$events = DB::table('events')->get();
 		$nearbySets = DB::table('nearby_sets')->select('nearbyset')->get();
 		$nearbySetsID = DB::table('nearby_sets')->select('id')->get();
-		$patronsInEvent = DB::table('event_patron')
-			->where('event_id', $eventID)
-	    	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
-			->get();
-		return view('dev.generateNearbySet', ['eventID' => $eventID, 'patronsInEvent' => $patronsInEvent, 'events' => $events, 'nearbySets' => $nearbySets, 'nearbySetsID'=>$nearbySetsID]);
+		return view('dev.generateNearbySet', ['patrons' => $patrons, 'events' => $events, 'nearbySets' => $nearbySets, 'nearbySetsID'=>$nearbySetsID]);
 	}
 
 	/**
@@ -116,11 +112,21 @@ class HomeController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function createNearbySet($eventID, $nearbyset)
+	public function createNearbySet($nearbyset)
 	{
 		$nearbyset = str_replace("-",",",$nearbyset);
 		DB::table('nearby_sets')->insert(['nearbyset' => $nearbyset]);
-		return redirect('generateNearbySet/'.$eventID);
+		return redirect('generateNearbySet/');
+	}
+	/**
+	 * Show the application dashboard to the user.
+	 *
+	 * @return Response
+	 */
+	public function deleteNearbySet($nearbyset)
+	{
+		DB::table('nearby_sets')->where('id', $nearbyset)->delete();
+		return redirect('generateNearbySet/');
 	}
 	/**
 	 * Show the application dashboard to the user.
@@ -139,8 +145,8 @@ class HomeController extends Controller {
 				->insert([
 				    'event_id' => $event->id, 
 				    'patron_id' => $newPatron->id,
-				    'carthere' => 'none', 
-				    'carback' => 'none', 
+				    'carthere' => 'any', 
+				    'carback' => 'any', 
 				    'leavingtime' => 'na',
 				    'softDelete' => '1'
 				]);
@@ -168,18 +174,10 @@ class HomeController extends Controller {
 	{
 		$input = Request::all();
 		$patron=patrons::find($patronID);
+		$input['suburb'] = str_replace(' ', '', strtolower($input['suburb']));
 		$patron->fill($input);
 		$patron->save();
 		return redirect('patron/'.$patronID);
-	}
-	/**
-	 * Show the application dashboard to the user.
-	 *
-	 * @return Response
-	 */
-	public function moi()
-	{
-		return view('dev.moi');
 	}
 
 	/**
@@ -217,6 +215,15 @@ class HomeController extends Controller {
 	            ->where('event_id', $eventID)
 	            ->where('patron_id', $patronID)
 	            ->update(['carback' => 'none']);
+	    }elseif ($toggleID == "1"){
+			DB::table('event_patron')
+	            ->where('event_id', $eventID)
+	            ->where('patron_id', $patronID)
+	            ->update(['carthere' => 'any']);
+			DB::table('event_patron')
+	            ->where('event_id', $eventID)
+	            ->where('patron_id', $patronID)
+	            ->update(['carback' => 'any']);
 	    }
 	}
 	

@@ -36,7 +36,25 @@
           <div class="form-group">
             <label class="col-md-4 control-label">Suburb/city</label>
             <div class="col-md-6">
-              <input type="text" class="form-control" name="suburb">
+                      <select class="form-control" name="suburb">
+                          <option>St Lucia</option>
+                          <option>Toowong</option>
+                          <option>Taringa</option>
+                          <option>Auchenflower</option>
+                          <option>Indooroopilly</option>
+                          <option>Chapelhill</option>
+                          <option>Kelvingrove</option>
+                          <option>Woolongabba</option>
+                          <option>Duttonpark</option>
+                          <option>Fairfield</option>
+                          <option>oxley</option>
+                          <option>Sherwood</option>
+                          <option>Corinda</option>
+                          <option>Sunnybank</option>
+                          <option>Willawong</option>
+                          <option>Logan</option>
+                          <option>Other</option>
+                      </select>
             </div>
           </div>
           <div class="form-group">

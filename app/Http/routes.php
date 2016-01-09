@@ -28,8 +28,9 @@ Route::get('test', function()
 Route::get('event', 'HomeController@getEventList');
 Route::get('event/{eventID}', 'HomeController@show');
 Route::post('event/create', 'HomeController@createEvent');
-Route::get('generateNearbySet/{eventID}', 'HomeController@generateNearbySet');
-Route::get('createNearbySet/{eventID}/{nearbyset}', 'HomeController@createNearbySet');
+Route::get('generateNearbySet', 'HomeController@generateNearbySet');
+Route::get('createNearbySet/{nearbyset}', 'HomeController@createNearbySet');
+Route::get('deleteNearbySet/{nearbyset}', 'HomeController@deleteNearbySet');
 Route::get('patron', 'HomeController@getPetronList');
 Route::get('patron/{patronID}', 'HomeController@showPatron');
 Route::post('editPatron/{patronID}', 'HomeController@editPatron');

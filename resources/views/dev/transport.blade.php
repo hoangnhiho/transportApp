@@ -41,7 +41,7 @@
 			</div>
 		</div>
 
-        <a target="_blank" type="button" class="btn btn-primary" style="width: 100%" href='{{url("generateNearbySet/".$eventID)}}' >
+        <a target="_blank" type="button" class="btn btn-primary" style="width: 100%" href='{{url("generateNearbySet")}}' >
             <spam class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></spam>
             Generate nearby sets
         </a>
@@ -140,7 +140,7 @@
                     @else
                     <div class="col-xs-2 col-md-2">
                         <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronThere{{$counter++}}" style="display: none">
-                        <p id="textPatronThere{{$counter-1}}" style="display: none">{{$patron3->name}}</p>
+                        <p id="textPatronThere{{$counter-1}}" style="display: none; height:28px;">{{$patron3->name}}</p>
                     </div>
                     @endif
                     @if ($patron3->id % 5 == 0)
@@ -154,6 +154,20 @@
                 @endforeach
         
             </div><!-- close Panel-->
+            <div class="panel panel-default">
+                <div class="panel-heading"><a data-toggle="collapse" href="#walkingThereList">Walkers - There</a></div>
+                <div class="panel-body collapse in" id="walkingThereList">
+                    <div class="row">
+                    <div style="display:none">{{$counter = 1}}</div>
+                        @foreach ($patronsInEvent as $patron3)
+                            <div class="col-xs-2 col-md-2">
+                                <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgWalkingThere{{$counter++}}" style="display: none">
+                                <p id="textWalkingThere{{$counter-1}}" style="display: none; height:28px;">{{$patron3->name}}</p>
+                            </div>
+                        @endforeach
+                    </div> 
+                </div>
+            </div>
         </div><!-- close mod-md-3 -->
 
     <div class="col-md-3">
@@ -171,7 +185,7 @@
                     @else
                     <div class="col-xs-2 col-md-2">
                         <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronBack{{$counter++}}" style="display: none">
-                        <p id="textPatronBack{{$counter-1}}" style="display: none">{{$patron3->name}}</p>
+                        <p id="textPatronBack{{$counter-1}}" style="display: none; height:28px;">{{$patron3->name}}</p>
                     </div>
                     @endif
                     @if ($patron3->id % 5 == 0)
@@ -184,6 +198,20 @@
                     @endif
                 @endforeach
         </div>
+            <div class="panel panel-default">
+                <div class="panel-heading"><a data-toggle="collapse" href="#walkingBackList">Walkers - Back</a></div>
+                <div class="panel-body collapse in" id="walkingBackList">
+                    <div class="row">
+                    <div style="display:none">{{$counter = 1}}</div>
+                        @foreach ($patronsInEvent as $patron3)
+                            <div class="col-xs-2 col-md-2">
+                                <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgWalkingBack{{$counter++}}" style="display: none">
+                                <p id="textWalkingBack{{$counter-1}}" style="display: none; height:28px;">{{$patron3->name}}</p>
+                            </div>
+                        @endforeach
+                    </div> 
+                </div>
+            </div>
 	</div>
 </div>
 
@@ -209,7 +237,18 @@ suburbs = {
 $( document ).ready(function() {
 	//Page load settings
 	var eventID = {!!$eventID!!};
+
+    //Collapses all panels if mobile.
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+          $('#patronList').collapse('hide');
+          $('#transportThereList').collapse('hide');
+          $('#walkingThereList').collapse('hide');
+          $('#transportBackList').collapse('hide');
+          $('#walkingBackList').collapse('hide');
+    }
+
     runAlgorithm();
+
     //=== Get eventID ===//
     $('#refreshBtn').on('click', function() {
         window.location.reload(1);
@@ -231,6 +270,8 @@ $( document ).ready(function() {
         var $this = $(this);
         var patronID = $this.attr("id").substring(6);
         if($this.is(":checked")){
+            $('#carthere'+patronID+'-any').prop('selected', true);
+            $('#carback'+patronID+'-any').prop('selected', true);
             $.get( "/toggleEventPatron/"+eventID+"/"+patronID+"/"+"1", function( data ) {});
         }else{
             $('#carthere'+patronID+'-none').prop('selected', true);
@@ -280,6 +321,11 @@ $( document ).ready(function() {
                 $('#textPatronThere'+i).hide();
                 $('#imgPatronBack'+i).hide();
                 $('#textPatronBack'+i).hide();
+
+                $('#imgWalkingThere'+i).hide();
+                $('#textWalkingThere'+i).hide();
+                $('#imgWalkingBack'+i).hide();
+                $('#textWalkingBack'+i).hide();
             }
             //console.log(JSON.stringify(arrayPatron));
             //console.log(JSON.stringify(arrayNearBySet));
@@ -287,9 +333,12 @@ $( document ).ready(function() {
             var plan = runTransportAlgorithm(arrayPatron, arrayNearBySet);
             var planThere = plan[0];
             var planBack = plan[1];
+            var walkThere = plan[2];
+            var walkBack = plan[3];
+
             //console.log(plan);
-            console.log(planThere);
-            console.log(planBack);
+            //console.log(walkThere);
+            //console.log(planBack);
 
             var counter = 1;
             planThere.forEach(function(car) {
@@ -304,6 +353,16 @@ $( document ).ready(function() {
                     counter = ((Math.ceil(counter/5))*5)+1;
                 }
             });
+
+            var counter = 1;
+            walkThere.forEach(function(walker) {
+                $('#imgWalkingThere'+counter).show();
+                $('#textWalkingThere'+counter).show();
+                $('#imgWalkingThere'+counter).attr('src', walker.picurl);
+                $('#textWalkingThere'+counter).html(walker.name);
+                counter++;
+            });
+
             counter=1;
             planBack.forEach(function(car) {
                 car.forEach(function(passenger){
@@ -318,6 +377,14 @@ $( document ).ready(function() {
                 }
             });
             
+            var counter = 1;
+            walkBack.forEach(function(walker) {
+                $('#imgWalkingBack'+counter).show();
+                $('#textWalkingBack'+counter).show();
+                $('#imgWalkingBack'+counter).attr('src', walker.picurl);
+                $('#textWalkingBack'+counter).html(walker.name);
+                counter++;
+            });
 
         }, "json" );
     }
