@@ -446,6 +446,7 @@ function runTransportAlgorithm(patrons, nearbySetsList){
             carsThere[driverIDIndexInCarList(carsThere, passengersThere[i].carthere)].push(passengersThere[i]);
         } else if(passengersThere[i].carthere == "none" || passengersThere[i].carthere == "staying"){
             passengersThere.splice(i, 1);
+            i--;
         }
     }
 
@@ -457,6 +458,7 @@ function runTransportAlgorithm(patrons, nearbySetsList){
             carsBack[driverIDIndexInCarList(carsBack, passengersBack[i].carback)].push(passengersBack[i]);
         } else if(passengersBack[i].carback == "none" || passengersBack[i].carback == "staying"){
             passengersBack.splice(i, 1);
+            i--;
         }
     }
 
@@ -558,7 +560,7 @@ function processPlan(patronsList, carsList, walkingList, passengersList, nearbyS
         var bestDriver = calculateBestDriver(carsList, passengersList[i], 1);
         addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
     }
-    
+
     removeProcessedPassengers(passengersList, carsList);
 }
 
