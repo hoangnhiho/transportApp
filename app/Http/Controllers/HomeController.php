@@ -107,6 +107,23 @@ class HomeController extends Controller {
 			->get();
 		return view('dev.transport', ['eventID' => $eventID, 'patronsInEvent' => $patronsInEvent, 'events' => $events, 'nearbySets' => $nearbySets]);
 	}
+
+	/**
+	 * Show the application dashboard to the user.
+	 *
+	 * @return Response
+	 */
+	public function publicShow($eventID)
+	{
+		$patrons = DB::table('patrons')->get();
+		$events = DB::table('events')->get();
+		$nearbySets = DB::table('nearby_sets')->get();
+		$patronsInEvent = DB::table('event_patron')
+			->where('event_id', $eventID)
+	    	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
+			->get();
+		return view('dev.transport', ['publicShow' => 'publicShow', 'eventID' => $eventID, 'patronsInEvent' => $patronsInEvent, 'events' => $events, 'nearbySets' => $nearbySets]);
+	}
 	/**
 	 * Show the application dashboard to the user.
 	 *

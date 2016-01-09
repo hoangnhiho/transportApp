@@ -26,7 +26,8 @@ Route::get('test', function()
 
 //==== Serious Stuff! ====//
 Route::get('event', 'HomeController@getEventList');
-Route::get('event/{eventID}', 'HomeController@show');
+Route::get('eventAdmin/{eventID}', 'HomeController@show');
+Route::get('event/{eventID}', 'HomeController@publicShow');
 Route::post('event/create', 'HomeController@createEvent');
 Route::get('generateNearbySet', 'HomeController@generateNearbySet');
 Route::get('createNearbySet/{nearbyset}', 'HomeController@createNearbySet');

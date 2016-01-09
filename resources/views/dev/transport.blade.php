@@ -14,9 +14,6 @@
         .patronDetailRow{
             min-height: 55px;
         }
-        .eventColumn{
-            display:none;
-        }
         .panel-body{
             padding-left:23px;
             padding-right:23px;
@@ -27,13 +24,14 @@
     }
 </style>
 <div class='row'>
+    <div class="col-md-3 dummyColumn" style="display:none"></div>
 	<div class="col-md-2 eventColumn">
 		<div class="panel panel-default">
 			<div class="panel-heading">Events</div>
 			<div class="panel-body">
 			<ul class="nav nav-pills nav-stacked">
 				@foreach ($events as $event) 
-					<li role="presentation" class="events @if ($eventID == $event->id) active @endif " id="{{$event->id}}"><a href="{{ url('/event/'.$event->id) }}">
+					<li role="presentation" class="events @if ($eventID == $event->id) active @endif " id="{{$event->id}}"><a href="{{ url('/eventAdmin/'.$event->id) }}">
 						<spam>{{$event->id}} - {{$event->name}}, {{$event->datetime}}</spam>
 					</a></li>
 				@endforeach
@@ -47,7 +45,7 @@
         </a>
 
 	</div>
-	<div class="col-md-4">
+	<div class="col-md-4 patronColumn">
 		<div class="panel panel-default">
 			<div class="panel-heading">
                 <div class="row" style="padding:0px 15px">
@@ -81,11 +79,11 @@
                         <div class="col-xs-8 col-md-4 patronDetailRow">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <a href="{{url('patron/'.$patron->id)}}">{{$patron->name}}</a>
+                                    <a href="{{url('patron/'.$patron->id)}}">{{ucwords($patron->name)}}</a>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12" style="font-size: .8em;">{{$patron->address}}, {{$patron->suburb}}</div>
+                                <div class="col-md-12" style="font-size: .8em;">{{$patron->address}}, {{ucfirst($patron->suburb)}}</div>
                             </div>
                         </div>
                         <div class="col-xs-6 col-md-3">
@@ -237,13 +235,18 @@ suburbs = {
 $( document ).ready(function() {
 	//Page load settings
 	var eventID = {!!$eventID!!};
-
+    @if (isset($publicShow))
+        $('.eventColumn').hide();
+        $('.patronColumn').hide();
+        $('.dummyColumn').show();
+    @endif
+    
     //Collapses all panels if mobile.
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
           $('#patronList').collapse('hide');
-          $('#transportThereList').collapse('hide');
+          //$('#transportThereList').collapse('hide');
           $('#walkingThereList').collapse('hide');
-          $('#transportBackList').collapse('hide');
+          //$('#transportBackList').collapse('hide');
           $('#walkingBackList').collapse('hide');
     }
 
