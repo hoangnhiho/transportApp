@@ -223,6 +223,8 @@
 <script>
 var arrayPatron = [];
 var arrayNearBySet = [];
+//SL, TW, TR, AU, IN
+//CA, KA, WA, OA, SA
 suburbs = {
     SLSL:1, SLTW:2, SLTR:2, SLAU:3, SLIN:3, SLCA:4, SLKA:5, SLWA:6, SLOA:6, SLSA:7,
     TWSL:2, TWTW:1, TWTR:2, TWAU:2, TWIN:3, TWCA:4, TWKA:4, TWWA:5, TWOA:6, TWSA:6, 
@@ -294,6 +296,7 @@ $( document ).ready(function() {
         var tempVar = $(this).children(":selected").attr("id").substring(8).split('-');
         var patronId = tempVar[0];
         var driverId = tempVar[1];
+        if (driverId != "none") $('#patron'+patronId).prop( "checked", true );
         $.get( "/postCarThere/"+eventID+"/"+patronId+"/"+driverId, function( data ) {
             //console.log(data);
         });
@@ -304,6 +307,7 @@ $( document ).ready(function() {
         var tempVar = $(this).children(":selected").attr("id").substring(7).split('-');
         var patronId = tempVar[0];
         var driverId = tempVar[1];
+        if (driverId != "none") $('#patron'+patronId).prop( "checked", true );
         $.get( "/postCarBack/"+eventID+"/"+patronId+"/"+driverId, function( data ) {
             //console.log(data);
         });
@@ -518,7 +522,97 @@ function processPlan(patronsList, carsList, walkingList, passengersList, nearbyS
     var relevantNearbySets = 
         processNearbySetsFromPassengerList(nearbySetsList, tempPassengersList);
 
+    /* Sort relevantNearbySets by length */
+    //var b = list[y];
+    //list[y] = list[x];
+    //list[x] = b;
+    for(var k = 0; k < 5; k++){
+        for(var i = 0; i < relevantNearbySets.length; i++){
+            if(!(i+1 >= relevantNearbySets.length)){
+                if(relevantNearbySets[i].length < relevantNearbySets[i+1].length){
+                    var tempNBSet = relevantNearbySets[i];
+                    relevantNearbySets[i] = relevantNearbySets[i+1];
+                    relevantNearbySets[i+1] = tempNBSet;
+                }
+            } 
+        }
+    }
+
     /* Process the nearby sets into their cars */
+
+    /* Process nearby sets with three passengers */
+    for(var i = 0; i < relevantNearbySets.length; i++){
+        if(relevantNearbySets[i].length == 3){
+            /* Find a car that has two people in it if the driver or the first passenger share the same suburb as the nearby set then add the nearby set to this car */
+            var tempBestCarIndex = "false";
+            for(var j = 0; j < carsList.length; j++){
+                /*if(carsList[j].length == 1){
+                    if(carsList[j][0].suburb == relevantNearbySets[i][0].suburb){
+                        tempBestCarIndex = j;
+                    } 
+                }*/
+                if(carsList[j].length == 2){
+                    /* If the suburb of either the driver or the first passenger is the same as the nearby set of three */
+                    if(carsList[j][1].suburb == relevantNearbySets[i][0].suburb || carsList[j][0].suburb == relevantNearbySets[i][0].suburb){
+                        tempBestCarIndex = j;
+                    }
+                    /* If the suburb of both the driver or the first passenger is the same as the nearby set of three, then push immediately */
+                    if(carsList[j][i].suburb == relevantNearbySets[i][0].suburb && carsList[j][0].suburb == relevantNearbySets[i][0].suburb){
+                        tempBestCarIndex = j;
+                        //addToPlan(carsList, walkingList, relevantNearbySets[i][j], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
+                        break;
+                    }
+                }
+            }
+
+            /* If there is no car that has the driver or first passenger suburb the same as the suburb for the nearby set of three, then if there is no other
+            passenger of the same suburb as the nearby set then add the nearby set to a car with only three spaces. Otherwise leave it how it is (tempBestCarIndex = false)
+            and the nearby set of three will be placed in an empty car (a car with four spaces). */
+            if(tempBestCarIndex == "false"){
+                for(var k = 0; k < passengersList.length; k++){
+                    if(passengersList[k].suburb == relevantNearbySets[i][0].suburb
+                        && passengersList[k].patron_id != relevantNearbySets[i][0].patron_id
+                        && passengersList[k].patron_id != relevantNearbySets[i][1].patron_id
+                        && passengersList[k].patron_id != relevantNearbySets[i][2].patron_id){
+                        tempBestCarIndex = "place in empty car";
+                        
+                    }
+                }
+            }
+
+            if(tempBestCarIndex != "place in empty car"){
+                for(var m = 0; m < carsList.length; m++){
+                    if(carsList[m].length == 2){
+                        tempBestCarIndex = m;
+                        break;
+                    }
+                }
+            }
+
+            if(tempBestCarIndex == "place in empty car"){
+                tempBestCarIndex = "false";
+            }
+
+            if(tempBestCarIndex != "false"){
+                for(var k = 0; k < relevantNearbySets[i].length; k++){
+                    addToPlan(carsList, walkingList, relevantNearbySets[i][k], tempBestCarIndex, direction);
+                }
+            }
+        }
+    }
+
+    /* Process nearby set where one of the passengers of the nearby set were processed as a preference */
+    for(var i = 0; i < relevantNearbySets.length; i++){
+        for(var j = 0; j < relevantNearbySets[i].length; j++){    
+            if(carIndexOfPassenger(carsList, walkingList, relevantNearbySets[i][j]) != -1){
+                for(var k = 0; k < relevantNearbySets[i].length; k++){
+                    addToPlan(carsList, walkingList, relevantNearbySets[i][k], carIndexOfPassenger(carsList, walkingList, relevantNearbySets[i][j]), direction);
+                }
+            }        
+        }
+    }
+
+    /* Process the rest of the nearby sets by the closest driver to the nearby set */
     for(var i = 0; i < relevantNearbySets.length; i++){
         var bestDriver = calculateBestDriver(carsList, relevantNearbySets[i][0], relevantNearbySets[i].length);
         for(var j = 0; j < relevantNearbySets[i].length; j++){
@@ -591,6 +685,9 @@ function processPlan(patronsList, carsList, walkingList, passengersList, nearbyS
             addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
         }
     }*/
+
+
+
     for(var currentDistantRank = 0; currentDistantRank < 12; currentDistantRank++){
         for(var i = 0; i < passengersList.length; i++){
             var bestDriver = calculateBestDriver(carsList, passengersList[i], 1);
@@ -599,6 +696,25 @@ function processPlan(patronsList, carsList, walkingList, passengersList, nearbyS
             var passenger_name = passengersList[i].name;
             var best_drivername = bestDriver.name;
             if(suburbs[String(bestDriver.suburb).concat(passengersList[i].suburb)] == currentDistantRank){
+                /*if(numOfSeatsRemaining(carsList) > (5-carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)].length)){
+                    //SL, TW, TR, AU, IN
+                    //CA, KA, WA, OA, SA
+                    if(passengersList[i].suburb == "SL" || passengersList[i].suburb == "TW" || passengersList[i].suburb == "TR" || passengersList[i].suburb == "AU" || passengersList[i].suburb == "IN"){
+                        if(carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)][1] != undefined){
+                            if(carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)][1].suburb != "CA" &&
+                                carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)][1].suburb != "KA" &&
+                                carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)][1].suburb != "WA" &&
+                                carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)][1].suburb != "OA" &&
+                                carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)][1].suburb != "SA"){
+                                addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
+                            }
+                        }
+                    } else {
+                        addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
+                    }
+                } else {
+                    addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
+                }*/
                 addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
             }
         }
@@ -629,12 +745,15 @@ function calculateBestDriver(cars, patron, numPatrons){
     var i = 0;
     var bestDriver = cars[i][0];
     var currentSuburbPairRank = suburbs[String(patron.suburb).concat(cars[i][0].suburb)];
+    var bestCarIndex = 0;
+    var carSummations = new Array();
     while(cars[i].length > 4 - (numPatrons - 1)){
         i++;
         if(i >= cars.length){
             return -1;
         }
         bestDriver = cars[i][0];
+        bestCarIndex = i;
         currentSuburbPairRank = suburbs[String(patron.suburb).concat(cars[i][0].suburb)];
     }
     for(; i < cars.length; i++){
@@ -642,6 +761,23 @@ function calculateBestDriver(cars, patron, numPatrons){
             && cars[i].length < 5 - (numPatrons - 1)){
             currentSuburbPairRank = suburbs[String(patron.suburb).concat(cars[i][0].suburb)];
             bestDriver = cars[i][0];
+            bestCarIndex = i;
+        }
+    }
+    /*for(; i < cars.length; i++){
+        var tempSum = 0;
+        for(var j = 0; j < cars[i].length; j++){
+            tempSum = tempSum + 
+        }
+    }*/
+    /* Make the best driver the driver with the least passenger */
+    if(bestDriver.suburb != patron.suburb){
+        for(var i = 0; i < cars.length; i++){
+            if(cars[bestCarIndex].length > cars[i].length &&
+                cars[bestCarIndex].suburb == cars[i].suburb){
+                bestDriver = cars[i][0];
+                bestCarIndex = i;
+            }
         }
     }
     return bestDriver;
@@ -657,7 +793,7 @@ function isDriver(cars, patron){
 }
 
 function seatsRemaining(cars){
-    sumOfSeats = 0;
+    var sumOfSeats = 0;
     for(var i = 0; i < cars.length; i++){
         sumOfSeats = sumOfSeats + cars[i].length;
     }
@@ -665,6 +801,14 @@ function seatsRemaining(cars){
         return false;
     }
     return true;
+}
+
+function numOfSeatsRemaining(cars){
+    var sumOfSeats = 0;
+    for(var i = 0; i < cars.length; i++){
+        sumOfSeats = sumOfSeats + cars[i].length;
+    }
+    return (cars.length * 5) - sumOfSeats;
 }
 
 function addToPlan(cars, walking, passenger, carIndex, direction){
@@ -704,6 +848,22 @@ function planContains(cars, walking, passenger){
         }
     }
     return false;
+}
+
+function carIndexOfPassenger(cars, walking, passenger){
+    for(var i = 0; i < cars.length; i++){
+        for(var j = 0; j < cars[i].length; j++){
+            if(cars[i][j].patron_id == passenger.patron_id){
+                return i;
+            }
+        }
+    }
+    for(var i = 0; i < walking.length; i++){
+        if(walking[i].patron_id == passenger.patron_id){
+            return -1;
+        }
+    }
+    return -1;
 }
 
 function removeProcessedPassengers(passengersList, carsList){

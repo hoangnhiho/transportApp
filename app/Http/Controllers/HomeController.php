@@ -267,6 +267,12 @@ class HomeController extends Controller {
             ->where('event_id', $eventID)
             ->where('patron_id', $patronID)
             ->update(['carthere' => $driverID]);
+        if ($driverID != 'none'){
+			DB::table('event_patron')
+	            ->where('event_id', $eventID)
+	            ->where('patron_id', $patronID)
+	            ->update(['softDelete' => '1']);
+        }
         //return "eventID = ".$eventID." | patronID = ".$patronID." | driverID = ".$driverID;
 	}
 
@@ -281,6 +287,12 @@ class HomeController extends Controller {
             ->where('event_id', $eventID)
             ->where('patron_id', $patronID)
             ->update(['carback' => $driverID]);
+        if ($driverID != 'none'){
+			DB::table('event_patron')
+	            ->where('event_id', $eventID)
+	            ->where('patron_id', $patronID)
+	            ->update(['softDelete' => '1']);
+        }
         //return "eventID = ".$eventID." | patronID = ".$patronID." | driverID = ".$driverID;
 	}
 

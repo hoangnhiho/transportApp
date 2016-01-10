@@ -38,7 +38,7 @@
             <div class="col-md-10">
                 <div class="row">
                     <div class="col-md-12">
-                        <a href="{{url('patron/'.$patron->id)}}">{{$patron->name}}</a>
+                        <a href="{{url('patron/'.$patron->id)}}">{{$patron->id}} - {{$patron->name}}</a>
                     </div>
                 </div>
                 <div class="row">
