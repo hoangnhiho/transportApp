@@ -645,7 +645,7 @@ function processPlan(patronsList, carsList, walkingList, passengersList, nearbyS
 
     removeProcessedPassengers(passengersList, carsList);
 
-    /*Process passengers who share a suburb with one of the suburbs that the driver is already intending to visit*/
+    /*Process passengers who share a suburb with one of the suburbs that a driver is already intending to visit*/
     for(var i = 0; i < passengersList.length; i++){
         for(var j = 0; j < carsList.length; j++){
             for(var k = 0; k < carsList[j].length; k++){
@@ -716,6 +716,18 @@ function processPlan(patronsList, carsList, walkingList, passengersList, nearbyS
                     addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
                 }*/
                 addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
+
+                /*Process passengers who share a suburb with one of the suburbs that a driver is already intending to visit*/
+                for(var i = 0; i < passengersList.length; i++){
+                    for(var j = 0; j < carsList.length; j++){
+                        for(var k = 0; k < carsList[j].length; k++){
+                            if(passengersList[i].suburb == carsList[j][k].suburb){
+                                addToPlan(carsList, walkingList, passengersList[i], j, direction);
+                            }
+                        }
+                    }
+                }
+
             }
         }
     }
@@ -747,6 +759,7 @@ function calculateBestDriver(cars, patron, numPatrons){
     var currentSuburbPairRank = suburbs[String(patron.suburb).concat(cars[i][0].suburb)];
     var bestCarIndex = 0;
     var carSummations = new Array();
+    var currentAvgDistance = 99999999;
     while(cars[i].length > 4 - (numPatrons - 1)){
         i++;
         if(i >= cars.length){
@@ -755,23 +768,26 @@ function calculateBestDriver(cars, patron, numPatrons){
         bestDriver = cars[i][0];
         bestCarIndex = i;
         currentSuburbPairRank = suburbs[String(patron.suburb).concat(cars[i][0].suburb)];
+        currentAvgDistance = avgDistance(cars[i], patron);
     }
-    for(; i < cars.length; i++){
+    /*for(; i < cars.length; i++){
         if(suburbs[String(patron.suburb).concat(cars[i][0].suburb)] < currentSuburbPairRank
             && cars[i].length < 5 - (numPatrons - 1)){
             currentSuburbPairRank = suburbs[String(patron.suburb).concat(cars[i][0].suburb)];
             bestDriver = cars[i][0];
             bestCarIndex = i;
         }
-    }
-    /*for(; i < cars.length; i++){
-        var tempSum = 0;
-        for(var j = 0; j < cars[i].length; j++){
-            tempSum = tempSum + 
-        }
     }*/
-    /* Make the best driver the driver with the least passenger */
-    if(bestDriver.suburb != patron.suburb){
+    for(; i < cars.length; i++){
+        if(avgDistance(cars[i], patron) < currentAvgDistance
+            && cars[i].length < 5 - (numPatrons - 1)){
+            bestDriver = cars[i][0];
+            currentAvgDistance = avgDistance(cars[i], patron);
+            bestCarIndex = i;
+        }
+    }
+    /* Make the best driver the driver with the least passengers */
+    if(bestDriver.suburb != patron.suburb && numPatrons > 1){
         for(var i = 0; i < cars.length; i++){
             if(cars[bestCarIndex].length > cars[i].length &&
                 cars[bestCarIndex].suburb == cars[i].suburb){
@@ -781,6 +797,14 @@ function calculateBestDriver(cars, patron, numPatrons){
         }
     }
     return bestDriver;
+}
+
+function avgDistance(car, patron){
+    var tempSum = 0;
+    for(var i = 0; i < car.length; i++){
+        tempSum = tempSum + suburbs[String(patron.suburb).concat(car[i].suburb)];
+    }
+    return tempSum/(car.length);
 }
 
 function isDriver(cars, patron){
