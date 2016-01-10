@@ -94,8 +94,11 @@
                                 @foreach ($patronsInEvent as $patron1) 
                                     @if ($patron1->carthere == 'driving' )
                                         <option id="carthere{{$patron->id}}-{{$patron1->id}}" @if($patron->carthere == $patron1->id) selected @endif>{{$patron1->name}}</option>
+                                    @elseif ($patron1->carthere != 'driving' && $patron->carthere != 'none' && $patron->carthere != 'any' && $patron->carthere != 'driving' && $patron->carthere == $patron1->id)
+                                        <option id="carthere{{$patron->id}}-{{$patron1->id}}" @if($patron->carthere == $patron1->id) selected @endif>{{$patron1->name}}</option>
                                     @endif
                                 @endforeach
+                                
                             </select>
                         </div>
                         <div class="col-xs-6 col-md-3">
@@ -417,16 +420,23 @@ function runTransportAlgorithm(patrons, nearbySetsList){
 
     processSuburbMappings(patrons);
 
+    console.log(patrons);
+
     for(var i = 0; i < patrons.length; i++){
         if(patrons[i].carthere == "driving"){
             driversThere.push(patrons[i]);
         } else {
-            passengersThere.push(patrons[i]);
+            if(patrons[i].carthere != "none" && patrons[i].carthere != "staying"){
+                passengersThere.push(patrons[i]); 
+            }
+            
         }
         if(patrons[i].carback == "driving"){
             driversBack.push(patrons[i]);
         } else {
-            passengersBack.push(patrons[i]);
+            if(patrons[i].carback != "none" && patrons[i].carback != "staying"){
+                passengersBack.push(patrons[i]);
+            }
         }
     }
 
@@ -440,13 +450,26 @@ function runTransportAlgorithm(patrons, nearbySetsList){
     }
 
     /* Process preferences */
+    /*for(var i = 0; i < passengersThere.length; i++){
+        if(passengersThere[i].carthere == "none" || passengersThere[i].carthere == "staying"){
+            passengersThere.splice(i, 1);
+        }
+    }
+
+    for(var i = 0; i < passengersBack.length; i++){
+        if(passengersBack[i].carback == "none" || passengersBack[i].carback == "staying"){
+            passengersBack.splice(i, 1);
+        }
+    }*/
+
     for(var i = 0; i < passengersThere.length; i++){
         if(passengersThere[i].carthere != "none" && passengersThere[i].carthere != "driving" &&
             passengersThere[i].carthere != "staying"  && passengersThere[i].carthere != "any"){
-            carsThere[driverIDIndexInCarList(carsThere, passengersThere[i].carthere)].push(passengersThere[i]);
-        } else if(passengersThere[i].carthere == "none" || passengersThere[i].carthere == "staying"){
-            passengersThere.splice(i, 1);
-            i--;
+            if(driverIDIndexInCarList(carsThere, passengersThere[i].carthere) != -1){
+                if(carsThere[driverIDIndexInCarList(carsThere, passengersThere[i].carthere)].length < 5){
+                    carsThere[driverIDIndexInCarList(carsThere, passengersThere[i].carthere)].push(passengersThere[i]);
+                }
+            }
         }
     }
 
@@ -455,17 +478,24 @@ function runTransportAlgorithm(patrons, nearbySetsList){
     for(var i = 0; i < passengersBack.length; i++){
         if(passengersBack[i].carback != "none" && passengersBack[i].carback != "driving" &&
             passengersBack[i].carback != "staying"  && passengersBack[i].carback != "any"){
-            carsBack[driverIDIndexInCarList(carsBack, passengersBack[i].carback)].push(passengersBack[i]);
-        } else if(passengersBack[i].carback == "none" || passengersBack[i].carback == "staying"){
-            passengersBack.splice(i, 1);
-            i--;
+            if(driverIDIndexInCarList(carsBack, passengersBack[i].carback) != -1){
+                if(carsBack[driverIDIndexInCarList(carsBack, passengersBack[i].carback)].length < 5){
+                    carsBack[driverIDIndexInCarList(carsBack, passengersBack[i].carback)].push(passengersBack[i]);
+                }
+            }
         }
     }
 
     removeProcessedPassengers(passengersBack, carsBack);
 
-    processPlan(patrons, carsThere, walkingThere, passengersThere, nearbySetsList, "there");
-    processPlan(patrons, carsBack, walkingBack, passengersBack, nearbySetsList, "back");
+    if(carsThere.length != 0){
+        processPlan(patrons, carsThere, walkingThere, passengersThere, nearbySetsList, "there");
+    }
+
+    if(carsBack.length != 0){
+        processPlan(patrons, carsBack, walkingBack, passengersBack, nearbySetsList, "back");
+    }
+
     return new Array(carsThere, carsBack, walkingThere, walkingBack);
 }
 
@@ -474,10 +504,19 @@ function runTransportAlgorithm(patrons, nearbySetsList){
 function processPlan(patronsList, carsList, walkingList, passengersList, nearbySetsList, direction){
     /* Remove the nearby sets that are not relevant to the current transport plan 
     this means that there are not at least two patrons of the nearby set that are attending the event. */
-    var relevantNearbySets = 
-        processNearbySetsFromPassengerList(nearbySetsList, patronsList);
+    var tempPassengersList = new Array();
+    for(var i = 0; i < passengersList.length; i++){
+        tempPassengersList.push(passengersList[i])
+    }
 
-    //console.log(relevantNearbySets);
+    for(var i = 0; i < carsList.length; i++){
+        for(var j = 0; j < carsList[i].length; j++){
+            tempPassengersList.push(carsList[i][j]);
+        }
+    }
+
+    var relevantNearbySets = 
+        processNearbySetsFromPassengerList(nearbySetsList, tempPassengersList);
 
     /* Process the nearby sets into their cars */
     for(var i = 0; i < relevantNearbySets.length; i++){
@@ -510,6 +549,19 @@ function processPlan(patronsList, carsList, walkingList, passengersList, nearbyS
         }
     }
 
+    removeProcessedPassengers(passengersList, carsList);
+
+    /*Process passengers who share a suburb with one of the suburbs that the driver is already intending to visit*/
+    for(var i = 0; i < passengersList.length; i++){
+        for(var j = 0; j < carsList.length; j++){
+            for(var k = 0; k < carsList[j].length; k++){
+                if(passengersList[i].suburb == carsList[j][k].suburb){
+                    addToPlan(carsList, walkingList, passengersList[i], j, direction);
+                }
+            }
+        }
+    }
+
     /* Process passengers which share the same suburb as a driver */
     for(var i = 0; i < suburbSeparatedPassengersList.length; i++){
         for(var j = 0; j < suburbSeparatedPassengersList[i].length; j++){
@@ -528,7 +580,6 @@ function processPlan(patronsList, carsList, walkingList, passengersList, nearbyS
     }
 
     removeProcessedPassengers(passengersList, carsList);
-
     /* Process the remaining passengers into their cars */
     /*for(var i = 0; i < passengersList.length; i++){
         var bestDriver = calculateBestDriver(carsList, passengersList[i], 1);
@@ -541,7 +592,6 @@ function processPlan(patronsList, carsList, walkingList, passengersList, nearbyS
         }
     }*/
     for(var currentDistantRank = 0; currentDistantRank < 12; currentDistantRank++){
-        
         for(var i = 0; i < passengersList.length; i++){
             var bestDriver = calculateBestDriver(carsList, passengersList[i], 1);
             var thisss = suburbs[String(bestDriver.suburb).concat(passengersList[i].suburb)];
@@ -562,6 +612,14 @@ function processPlan(patronsList, carsList, walkingList, passengersList, nearbyS
     }
 
     removeProcessedPassengers(passengersList, carsList);
+}
+
+function visitingSuburbs(car){
+    var suburbVisits = new Array();
+    for(var i = 0; i < car.length; i++){
+        suburbVisits.push(car[i].suburb);
+    }
+    return suburbVisits;
 }
 
 /* Takes a set of cars and a passenger, returns the best driver for the 
