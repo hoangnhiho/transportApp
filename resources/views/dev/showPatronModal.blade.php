@@ -7,13 +7,13 @@
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       <h4 class="modal-title">{{$patron->name}}</h4>
-    </div>          <!-- /modal-header -->
+    </div><!-- /modal-header -->
     <div class="modal-body">
       <label>Address:</label> 
-      <span> {{$patron->address}},{{$patron->suburb}}, {{$patron->postcode}} </span>
-    </div>          <!-- /modal-body -->
+      <span> {{$patron->address}}, {{ucfirst($patron->suburb)}}, {{$patron->postcode}} </span>
+    </div><!-- /modal-body -->
     <div class="modal-footer">
       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    </div>          <!-- /modal-footer -->
+    </div><!-- /modal-footer -->
   </body>
 </html>

@@ -92,13 +92,12 @@
                                 <option id="carthere{{$patron->id}}-any" @if($patron->carthere == 'any') selected @endif>any</option>
                                 <option id="carthere{{$patron->id}}-driving" @if($patron->carthere == 'driving') selected @endif>driving</option>
                                 @foreach ($patronsInEvent as $patron1) 
-                                    @if ($patron1->carthere == 'driving' )
+                                    @if ($patron1->carthere == 'driving' && $patron->id != $patron1->id )
                                         <option id="carthere{{$patron->id}}-{{$patron1->id}}" @if($patron->carthere == $patron1->id) selected @endif>{{$patron1->name}}</option>
-                                    @elseif ($patron1->carthere != 'driving' && $patron->carthere != 'none' && $patron->carthere != 'any' && $patron->carthere != 'driving' && $patron->carthere == $patron1->id)
+                                    @elseif ($patron1->carthere != 'driving' && $patron->carthere != 'none' && $patron->carthere != 'any' && $patron->carthere != 'driving' && $patron->carthere == $patron1->id && $patron->id != $patron1->id)
                                         <option id="carthere{{$patron->id}}-{{$patron1->id}}" @if($patron->carthere == $patron1->id) selected @endif>{{$patron1->name}}</option>
                                     @endif
                                 @endforeach
-                                
                             </select>
                         </div>
                         <div class="col-xs-6 col-md-3">
@@ -107,7 +106,9 @@
                                 <option id="carback{{$patron->id}}-any" @if($patron->carback == 'any') selected @endif>any</option>
                                 <option id="carback{{$patron->id}}-driving" @if($patron->carback == 'driving') selected @endif>driving</option>
                                 @foreach ($patronsInEvent as $patron2) 
-                                    @if ($patron2->carback == 'driving' && $patron->carback != $patron2->carback)
+                                    @if ($patron2->carback == 'driving' && $patron->id != $patron2->id)
+                                        <option id="carback{{$patron->id}}-{{$patron2->id}}" @if($patron->carback == $patron2->id) selected @endif>{{$patron2->name}}</option>
+                                    @elseif ($patron2->carback != 'driving' && $patron->carback != 'none' && $patron->carback != 'any' && $patron->carback != 'driving' && $patron->carback == $patron2->id && $patron->id != $patron2->id)
                                         <option id="carback{{$patron->id}}-{{$patron2->id}}" @if($patron->carback == $patron2->id) selected @endif>{{$patron2->name}}</option>
                                     @endif
                                 @endforeach
@@ -674,55 +675,55 @@ function processPlan(patronsList, carsList, walkingList, passengersList, nearbyS
     }
 
     removeProcessedPassengers(passengersList, carsList);
-    /* Process the remaining passengers into their cars */
-    /*for(var i = 0; i < passengersList.length; i++){
-        var bestDriver = calculateBestDriver(carsList, passengersList[i], 1);
-        addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
-    }*/
-    /*for(var currentDistantRank = 0; currentDistantRank < 9; currentDistantRank++){
-        for(var i = 0; i < passengersList.length; i++){
-            var bestDriver = calculateBestDriver(carsList, passengersList[i], 1);
-            addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
-        }
-    }*/
-
-
 
     for(var currentDistantRank = 0; currentDistantRank < 12; currentDistantRank++){
         for(var i = 0; i < passengersList.length; i++){
             var bestDriver = calculateBestDriver(carsList, passengersList[i], 1);
-            var thisss = suburbs[String(bestDriver.suburb).concat(passengersList[i].suburb)];
-            var thisscode = String(bestDriver.suburb).concat(passengersList[i].suburb);
-            var passenger_name = passengersList[i].name;
-            var best_drivername = bestDriver.name;
             if(suburbs[String(bestDriver.suburb).concat(passengersList[i].suburb)] == currentDistantRank){
-                /*if(numOfSeatsRemaining(carsList) > (5-carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)].length)){
-                    //SL, TW, TR, AU, IN
-                    //CA, KA, WA, OA, SA
-                    if(passengersList[i].suburb == "SL" || passengersList[i].suburb == "TW" || passengersList[i].suburb == "TR" || passengersList[i].suburb == "AU" || passengersList[i].suburb == "IN"){
-                        if(carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)][1] != undefined){
-                            if(carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)][1].suburb != "CA" &&
-                                carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)][1].suburb != "KA" &&
-                                carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)][1].suburb != "WA" &&
-                                carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)][1].suburb != "OA" &&
-                                carsList[driverIDIndexInCarList(carsList, bestDriver.patron_id)][1].suburb != "SA"){
-                                addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
+                
+                var bestCarIndex = driverIDIndexInCarList(carsList, bestDriver.patron_id);
+
+                /* If the car of bestdriver has length equal to four and carsList does not contain the patron's suburb in 
+                any of the non-full cars, and there exists a near empty (length one or two including driver). Then add to
+                the near empty car */
+                if(carsList[bestCarIndex].length == 4){
+                    /* cars list does not contain the patron's suburb in any of the non-empty cars */
+                    var suburbContains = false;
+                    for(var m = 0; m < carsList.length; m++){
+                        if(carsList[m].length != 5){
+                            for(var n = 0; n < carsList[m].length; n++){
+                                if(carsList[m][n].suburb == passengersList[i].subrub){
+                                    suburbContains = true;
+                                }
                             }
                         }
-                    } else {
-                        addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
                     }
-                } else {
-                    addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
-                }*/
+                    
+                    /* cars list contains a near empty car */
+                    var nearEmptyExists = false;
+                    var nearEmptyCarIndex = -1;
+                    for(var m = 0; m < carsList.length; m++){
+                        if(carsList[m].length == 1 || carsList[m].length == 2){
+                            nearEmptyExists = true;
+                            nearEmptyCarIndex = m;
+                        }
+                    }
+                    if(!suburbContains && nearEmptyExists){
+                        addToPlan(carsList, walkingList, passengersList[i], nearEmptyCarIndex, direction);
+                    }
+                }
+
+                /* If the car of the bestDriver has a length of 4 and there exists more than one person with the current suburb, 
+                and there exists a car that can fit persons sharing the suburb then add it to that car*/ 
                 addToPlan(carsList, walkingList, passengersList[i], driverIDIndexInCarList(carsList, bestDriver.patron_id), direction);
 
                 /*Process passengers who share a suburb with one of the suburbs that a driver is already intending to visit*/
-                for(var i = 0; i < passengersList.length; i++){
-                    for(var j = 0; j < carsList.length; j++){
-                        for(var k = 0; k < carsList[j].length; k++){
-                            if(passengersList[i].suburb == carsList[j][k].suburb){
-                                addToPlan(carsList, walkingList, passengersList[i], j, direction);
+                
+                for(var m = 0; m < passengersList.length; m++){
+                    for(var n = 0; n < carsList.length; n++){
+                        for(var o = 0; o < carsList[n].length; o++){
+                            if(passengersList[m].suburb == carsList[n][o].suburb){
+                                addToPlan(carsList, walkingList, passengersList[m], n, direction);
                             }
                         }
                     }
@@ -786,7 +787,10 @@ function calculateBestDriver(cars, patron, numPatrons){
             bestCarIndex = i;
         }
     }
-    /* Make the best driver the driver with the least passengers */
+
+    
+
+    /* Make the best driver the driver with the least passengers but with the same suburb as the current best driver */
     if(bestDriver.suburb != patron.suburb && numPatrons > 1){
         for(var i = 0; i < cars.length; i++){
             if(cars[bestCarIndex].length > cars[i].length &&
@@ -999,7 +1003,7 @@ function processSuburbMappings(patrons){
             patrons[i].suburb = "OA";
         } else if(patrons[i].suburb == "sunnybank" || patrons[i].suburb == "willawong"
             || patrons[i].suburb == "logan"){
-            patrons[i].suburb = "SA";
+            patrons[i].suburb = "WA";
         }
     }
 }
