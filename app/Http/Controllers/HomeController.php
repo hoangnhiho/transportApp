@@ -75,8 +75,8 @@ class HomeController extends Controller {
 	{
 		$patrons = DB::table('patrons')->get();
 		$events = DB::table('events')->get();
-		$nearbySets = DB::table('nearby_sets')->select('nearbyset')->get();
-		$nearbySetsID = DB::table('nearby_sets')->select('id')->get();
+		$nearbySets = DB::table('nearby_sets')->orderBy('id', 'asc')->select('nearbyset')->get();
+		$nearbySetsID = DB::table('nearby_sets')->orderBy('id', 'asc')->select('id')->get();
 		return view('dev.generateNearbySet', ['patrons' => $patrons, 'events' => $events, 'nearbySets' => $nearbySets, 'nearbySetsID'=>$nearbySetsID]);
 	}
 
@@ -153,6 +153,7 @@ class HomeController extends Controller {
 	public function createPatron($eventID, Request $request)
 	{
 		$input = Request::all();
+		$input['suburb'] = str_replace(' ', '', strtolower($input['suburb']));
 		$newPatron = patrons::create($input);
 
 		$events = DB::table('events')->get();

@@ -67,9 +67,12 @@
           @foreach ($nearbySets as $nearbySet)
             <!-- ========== This code is CRAZY ============ -->
             <div class="row" id="nearbySet{{$nearbySetsID[$counter]->id}}">
-            <?php $counter++ ?>
+            
             <?php $nearbyset='' ?>
-            @foreach ($nearbySet as $char)<?php $nearbyset = $nearbyset . $char; ?> @endforeach <?php $nearbys = explode(",", $nearbyset); ?>
+            @foreach ($nearbySet as $char)
+              <?php $nearbyset = $nearbyset . $char; ?> 
+            @endforeach 
+            <?php $nearbys = explode(",", $nearbyset); ?>
             <!-- ========== This code is CRAZY ============ -->
             @foreach ($nearbys as $nearby)
               @foreach ($patrons as $patron)
@@ -81,7 +84,8 @@
                 @endif
               @endforeach
             @endforeach
-            <button type="button" class="btn btn-danger pull-right deleteSet" id="deleteSet{{$nearbySetsID[$counter-1]->id}}">Delete Set</button>
+            <button type="button" class="btn btn-danger pull-right deleteSet" id="deleteSet{{$nearbySetsID[$counter]->id}}">Delete Set</button>
+            <?php $counter++ ?>
             </div>
           @endforeach
         </div>
