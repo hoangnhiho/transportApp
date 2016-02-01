@@ -131,89 +131,30 @@
 		<div class="panel panel-default">
 			<div class="panel-heading"><a data-toggle="collapse" href="#transportThereList">Transport - There</a></div>
             <div class="panel-body collapse in" id="transportThereList">
-                <div style="display:none">{{$counter = 1}}</div>
-                @foreach ($patronsInEvent as $patron3) 
-                    @if ($patron3->id % 5 == 1)
-                    <div class="row" id="transportThere{{ceil ($patron3->id/5)}}">
-                    <div class="col-xs-3 col-md-3">
-                        <a data-toggle="modal" id="modalPatronThere{{$counter}}" href="{{url('getModalPatron/1')}}" data-target="#patronModal"><img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronThere{{$counter++}}" style="display: none"></a>
-                        <p id="textPatronThere{{$counter-1}}" style="display: none">{{$patron3->name}}</p>
-                    </div>
-                    @else
-                    <div class="col-xs-2 col-md-2">
-                        <a data-toggle="modal" id="modalPatronThere{{$counter}}" href="{{url('getModalPatron/1')}}" data-target="#patronModal"><img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronThere{{$counter++}}" style="display: none"></a>
-                        <p id="textPatronThere{{$counter-1}}" style="display: none; height:28px;">{{$patron3->name}}</p>
-                    </div>
-                    @endif
-                    @if ($patron3->id % 5 == 0)
-                        </div><!-- close row-->
-                    @endif
-                    @if ($patron3->id == count($patronsInEvent) && $patron3->id % 5 != 0)
-                        </div></div>
-                    @elseif ($patron3->id == count($patronsInEvent))
-                        </div><!-- close body-->
-                    @endif
-                @endforeach
+                
         
-            </div><!-- close Panel-->
-            <div class="panel panel-default">
-                <div class="panel-heading"><a data-toggle="collapse" href="#walkingThereList">Walkers - There</a></div>
-                <div class="panel-body collapse in" id="walkingThereList">
-                    <div class="row">
-                    <div style="display:none">{{$counter = 1}}</div>
-                        @foreach ($patronsInEvent as $patron3)
-                            <div class="col-xs-2 col-md-2">
-                                <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgWalkingThere{{$counter++}}" style="display: none">
-                                <p id="textWalkingThere{{$counter-1}}" style="display: none; height:28px;">{{$patron3->name}}</p>
-                            </div>
-                        @endforeach
-                    </div> 
-                </div>
             </div>
-        </div><!-- close mod-md-3 -->
+        </div><!-- close Panel-->
+        <div class="panel panel-default">
+            <div class="panel-heading"><a data-toggle="collapse" href="#walkingThereList">Walkers - There</a></div>
+            <div class="panel-body collapse in" id="walkingThereList">
 
+            </div>
+        </div>
+    </div><!-- close mod-md-3 -->
     <div class="col-md-3">
         <div class="panel panel-default">
             <div class="panel-heading"><a data-toggle="collapse" href="#transportBackList">Transport - Back</a></div>
             <div class="panel-body collapse in" id="transportBackList">
-                <div style="display:none">{{$counter = 1}}</div>
-                @foreach ($patronsInEvent as $patron3) 
-                    @if ($patron3->id % 5 == 1)
-                    <div class="row" id="transportBack{{ceil ($patron3->id/5)}}">
-                    <div class="col-xs-3 col-md-3">
-                        <a data-toggle="modal" id="modalPatronBack{{$counter}}" href="{{url('getModalPatron/1')}}" data-target="#patronModal"><img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronBack{{$counter++}}" style="display: none"></a>
-                        <p id="textPatronBack{{$counter-1}}" style="display: none">{{$patron3->name}}</p>
-                    </div>
-                    @else
-                    <div class="col-xs-2 col-md-2">
-                        <a data-toggle="modal" id="modalPatronBack{{$counter}}" href="{{url('getModalPatron/1')}}" data-target="#patronModal"><img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgPatronBack{{$counter++}}" style="display: none"></a>
-                        <p id="textPatronBack{{$counter-1}}" style="display: none; height:28px;">{{$patron3->name}}</p>
-                    </div>
-                    @endif
-                    @if ($patron3->id % 5 == 0)
-                        </div>
-                    @endif
-                    @if ($patron3->id == count($patronsInEvent) && $patron3->id % 5 != 0)
-                        </div></div>
-                    @elseif ($patron3->id == count($patronsInEvent))
-                        </div><!-- close body-->
-                    @endif
-                @endforeach
-        </div>
-            <div class="panel panel-default">
-                <div class="panel-heading"><a data-toggle="collapse" href="#walkingBackList">Walkers - Back</a></div>
-                <div class="panel-body collapse in" id="walkingBackList">
-                    <div class="row">
-                    <div style="display:none">{{$counter = 1}}</div>
-                        @foreach ($patronsInEvent as $patron3)
-                            <div class="col-xs-2 col-md-2">
-                                <img src="{{$patron3->picurl}}" class="img-thumbnail" alt="patronPic" id="imgWalkingBack{{$counter++}}" style="display: none">
-                                <p id="textWalkingBack{{$counter-1}}" style="display: none; height:28px;">{{$patron3->name}}</p>
-                            </div>
-                        @endforeach
-                    </div> 
-                </div>
+
             </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><a data-toggle="collapse" href="#walkingBackList">Walkers - Back</a></div>
+            <div class="panel-body collapse in" id="walkingBackList">
+
+            </div>
+        </div>
 	</div>
 </div>
 
@@ -330,17 +271,7 @@ $( document ).ready(function() {
                     arrayNearBySet.push(JSON.parse("[" + value.nearbyset + "]"));
                 }
             });
-            for (var i = 0; i<=max;i++){
-                $('#imgPatronThere'+i).hide();
-                $('#textPatronThere'+i).hide();
-                $('#imgPatronBack'+i).hide();
-                $('#textPatronBack'+i).hide();
 
-                $('#imgWalkingThere'+i).hide();
-                $('#textWalkingThere'+i).hide();
-                $('#imgWalkingBack'+i).hide();
-                $('#textWalkingBack'+i).hide();
-            }
             //console.log(JSON.stringify(arrayPatron));
             //console.log(JSON.stringify(arrayNearBySet));
 
@@ -354,53 +285,31 @@ $( document ).ready(function() {
             //console.log(walkThere);
             //console.log(planBack);
 
-            var counter = 1;
+            var tempHTMLstring = '';
+            var carCounter = 1;
             planThere.forEach(function(car) {
+                tempHTMLstring += '<div class="row" id="transportThere'+carCounter+'">';
                 car.forEach(function(passenger){
-                    $('#imgPatronThere'+counter).show();
-                    $('#textPatronThere'+counter).show();
-                    $('#imgPatronThere'+counter).attr('src', passenger.picurl);
-                    $('#modalPatronThere'+counter).attr('href', URL+'/getModalPatron/'+passenger.id);
-                    $('#textPatronThere'+counter).html(passenger.name);
-                    counter++;
+                    tempHTMLstring += '<div class="col-xs-2 col-md-2"><a data-toggle="modal" id="modalPatronThere'+passenger.id+'" href="'+URL+'/getModalPatron/'+passenger.id+'" data-target="#patronModal"><img src="'+passenger.picurl+'" class="img-thumbnail" alt="patronPic" id="imgPatronThere'+passenger.id+'"></a><p id="textPatronThere'+passenger.id+'">'+passenger.name+'</p></div>'
                 });
-                if (counter%5 != 1){
-                    counter = ((Math.ceil(counter/5))*5)+1;
-                }
+                tempHTMLstring += '</div>';
+                carCounter++;
             });
+            tempHTMLstring += '</div>';
+            $('#transportThereList').append(tempHTMLstring);
 
-            var counter = 1;
-            walkThere.forEach(function(walker) {
-                $('#imgWalkingThere'+counter).show();
-                $('#textWalkingThere'+counter).show();
-                $('#imgWalkingThere'+counter).attr('src', walker.picurl);
-                $('#textWalkingThere'+counter).html(walker.name);
-                counter++;
-            });
-
-            counter=1;
+            tempHTMLstring = '';
+            carCounter = 1;
             planBack.forEach(function(car) {
+                tempHTMLstring += '<div class="row" id="transportBack'+carCounter+'">';
                 car.forEach(function(passenger){
-                    $('#imgPatronBack'+counter).show();
-                    $('#textPatronBack'+counter).show();
-                    $('#imgPatronBack'+counter).attr('src', passenger.picurl);
-                    $('#modalPatronBack'+counter).attr('href', URL+'/getModalPatron/'+passenger.id);
-                    $('#textPatronBack'+counter).html(passenger.name);
-                    counter++;
+                    tempHTMLstring += '<div class="col-xs-2 col-md-2"><a data-toggle="modal" id="modalPatronBack'+passenger.id+'" href="'+URL+'/getModalPatron/'+passenger.id+'" data-target="#patronModal"><img src="'+passenger.picurl+'" class="img-thumbnail" alt="patronPic" id="imgPatronBack'+passenger.id+'"></a><p id="textPatronBack'+passenger.id+'">'+passenger.name+'</p></div>'
                 });
-                if (counter%5 != 1){
-                    counter = ((Math.ceil(counter/5))*5)+1;
-                }
+                tempHTMLstring += '</div>';
+                carCounter++;
             });
-            
-            var counter = 1;
-            walkBack.forEach(function(walker) {
-                $('#imgWalkingBack'+counter).show();
-                $('#textWalkingBack'+counter).show();
-                $('#imgWalkingBack'+counter).attr('src', walker.picurl);
-                $('#textWalkingBack'+counter).html(walker.name);
-                counter++;
-            });
+            tempHTMLstring += '</div>';
+            $('#transportBackList').append(tempHTMLstring);
 
         }, "json" );
     }
