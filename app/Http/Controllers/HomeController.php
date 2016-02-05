@@ -104,6 +104,7 @@ class HomeController extends Controller {
 		$patronsInEvent = DB::table('event_patron')
 			->where('event_id', $eventID)
 	    	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
+            ->orderBy('name','asc')
 			->get();
 		return view('dev.transport', ['eventID' => $eventID, 'patronsInEvent' => $patronsInEvent, 'events' => $events, 'nearbySets' => $nearbySets]);
 	}
