@@ -9,3 +9,43 @@
 [31-Dec-2015 11:20:02 UTC] PHP Parse error:  syntax error, unexpected '{', expecting ']' in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 64
 [31-Dec-2015 11:21:46 UTC] PHP Parse error:  syntax error, unexpected '{', expecting ']' in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 64
 [31-Dec-2015 11:21:48 UTC] PHP Parse error:  syntax error, unexpected '{', expecting ']' in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 64
+[31-Dec-2015 13:36:42 UTC] PHP Parse error:  syntax error, unexpected 'endforeach' (T_ENDFOREACH) in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/76403b66607df39cb81c496cfeceeb90 on line 54
+[02-Jan-2016 05:44:06 UTC] PHP Parse error:  syntax error, unexpected '}', expecting ']' in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 103
+[02-Jan-2016 08:03:16 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/e115f8370beda2565972e095f1468e7a on line 10
+[02-Jan-2016 08:04:57 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/e115f8370beda2565972e095f1468e7a on line 10
+[02-Jan-2016 08:05:44 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/e115f8370beda2565972e095f1468e7a on line 10
+[02-Jan-2016 08:20:24 UTC] PHP Fatal error:  Call to undefined method Illuminate\Support\Facades\Request::all() in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 140
+[02-Jan-2016 08:21:39 UTC] PHP Fatal error:  Call to undefined function App\Http\Controllers\fill() in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 142
+[02-Jan-2016 08:22:32 UTC] PHP Fatal error:  Call to undefined function App\Http\Controllers\fill() in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 143
+[02-Jan-2016 08:22:37 UTC] PHP Fatal error:  Call to undefined function App\Http\Controllers\fill() in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 143
+[02-Jan-2016 08:22:59 UTC] PHP Fatal error:  Call to undefined function App\Http\Controllers\fill() in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 143
+[02-Jan-2016 08:23:26 UTC] PHP Fatal error:  Call to undefined method stdClass::fill() in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 143
+[02-Jan-2016 08:23:56 UTC] PHP Fatal error:  Call to undefined method stdClass::fill() in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 143
+[02-Jan-2016 09:47:17 UTC] PHP Parse error:  syntax error, unexpected 'endforeach' (T_ENDFOREACH) in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/76403b66607df39cb81c496cfeceeb90 on line 122
+[03-Jan-2016 11:33:40 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/1e6cba04ee89851dec65876353ba1a87 on line 69
+[03-Jan-2016 11:33:54 UTC] PHP Parse error:  syntax error, unexpected ')', expecting :: (T_PAAMAYIM_NEKUDOTAYIM) in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/1e6cba04ee89851dec65876353ba1a87 on line 70
+[03-Jan-2016 11:34:07 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/1e6cba04ee89851dec65876353ba1a87 on line 69
+[03-Jan-2016 11:35:38 UTC] PHP Parse error:  syntax error, unexpected ')', expecting :: (T_PAAMAYIM_NEKUDOTAYIM) in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/1e6cba04ee89851dec65876353ba1a87 on line 70
+[03-Jan-2016 11:36:12 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/1e6cba04ee89851dec65876353ba1a87 on line 89
+[03-Jan-2016 12:05:47 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/1e6cba04ee89851dec65876353ba1a87 on line 67
+[03-Jan-2016 12:24:22 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF), expecting ')' in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/1e6cba04ee89851dec65876353ba1a87 on line 67
+[03-Jan-2016 12:25:12 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF), expecting ')' in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/1e6cba04ee89851dec65876353ba1a87 on line 68
+[03-Jan-2016 12:31:21 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/1e6cba04ee89851dec65876353ba1a87 on line 71
+[03-Jan-2016 12:34:57 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/1e6cba04ee89851dec65876353ba1a87 on line 68
+[08-Jan-2016 23:16:05 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'Undefined variable: strtolower' in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php:171
+Stack trace:
+#0 /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php(171): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/home/joelewed/...', 171, Array)
+#1 [internal function]: App\Http\Controllers\HomeController->editPatron(Object(Illuminate\Support\Facades\Request), '1')
+#2 /home/joelewed/public_html/transportApp/transportApp/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(246): call_user_func_array(Array, Array)
+#3 /home/joelewed/public_html/transportApp/transportApp/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(162): Illuminate\Routing\Controller->callAction('editPatron', Array)
+#4 /home/joelewed/public_html/transportApp/transportApp/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.ph in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 171
+[08-Jan-2016 23:16:05 UTC] PHP Fatal error:  Function name must be a string in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 171
+[09-Jan-2016 00:58:44 UTC] PHP Parse error:  syntax error, unexpected ',', expecting '&' or variable (T_VARIABLE) in /home/joelewed/public_html/transportApp/transportApp/app/Http/Controllers/HomeController.php on line 115
+[11-Jan-2016 11:25:25 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/76403b66607df39cb81c496cfeceeb90 on line 97
+[22-Mar-2016 12:25:05 UTC] PHP Fatal error:  Class 'HTML' not found in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/dc7058f7ba765dfa36c2418391de527d on line 1
+[22-Mar-2016 12:25:27 UTC] PHP Fatal error:  Class 'HTML' not found in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/dc7058f7ba765dfa36c2418391de527d on line 2
+[22-Mar-2016 12:25:29 UTC] PHP Fatal error:  Class 'HTML' not found in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/dc7058f7ba765dfa36c2418391de527d on line 2
+[22-Mar-2016 12:25:45 UTC] PHP Fatal error:  Class 'HTML' not found in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/dc7058f7ba765dfa36c2418391de527d on line 2
+[22-Mar-2016 12:25:47 UTC] PHP Fatal error:  Class 'HTML' not found in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/dc7058f7ba765dfa36c2418391de527d on line 2
+[22-Mar-2016 12:25:49 UTC] PHP Fatal error:  Class 'HTML' not found in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/dc7058f7ba765dfa36c2418391de527d on line 2
+[22-Mar-2016 12:26:05 UTC] PHP Fatal error:  Class 'HTML' not found in /home/joelewed/public_html/transportApp/transportApp/storage/framework/views/dc7058f7ba765dfa36c2418391de527d on line 2

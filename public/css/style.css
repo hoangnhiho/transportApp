@@ -34,3 +34,8 @@
     font-family: helvetica;
     font-weight: bold;
 }
+
+.passenger-container { 
+height:60px;
+width:60px;
+}

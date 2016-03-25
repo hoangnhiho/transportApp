@@ -25,12 +25,12 @@
             </div>
           </div>
 
-          <div class="form-group">
+<!--           <div class="form-group">
             <label class="col-md-4 control-label">Address</label>
             <div class="col-md-6">
               <input type="text" class="form-control" name="address">
             </div>
-          </div>
+          </div> -->
 
 
           <div class="form-group">
@@ -61,6 +61,13 @@
             <label class="col-md-4 control-label">PostCode</label>
             <div class="col-md-6">
               <input type="text" class="form-control" name="postcode">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label">Password</label>
+            <div class="col-md-6">
+              <input type="password" class="form-control" name="password">
             </div>
           </div>
 

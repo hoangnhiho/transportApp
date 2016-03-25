@@ -25,7 +25,7 @@ class HomeController extends Controller {
 	 */
 	public function __construct()
 	{
-		//$this->middleware('auth');
+		$this->middleware('auth');
 	}
 
 	/**
@@ -35,7 +35,8 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
-		return view('home');
+		//return view('event/1');
+		return redirect('event/1');
 	}
 
 	/**
@@ -53,6 +54,18 @@ class HomeController extends Controller {
 	    	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
 			->get();
 		return view('dev.joel', ['patronsInEvent' => $patronsInEvent, 'events' => $events]);
+	}
+
+	public function moi()
+	{
+		$patrons = DB::table('patrons')->get();
+		$eventID = DB::table('events')->first();
+		$events = DB::table('events')->get();
+		$patronsInEvent = DB::table('event_patron')
+			->where('event_id', $eventID->id)
+	    	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
+			->get();
+		return view('dev.moi', ['patronsInEvent' => $patronsInEvent, 'events' => $events]);
 	}
 
 	/**
@@ -154,6 +167,8 @@ class HomeController extends Controller {
 	public function createPatron($eventID, Request $request)
 	{
 		$input = Request::all();
+		if ($input['password'] != 'secret') return 'You are not admin! stop trying to hack me!';
+		if ($input['picurl'] == '' || !isset($input['picurl'])) $input['picurl'] = "https://www.sparklabs.com/forum/styles/comboot/theme/images/default_avatar.jpg";
 		$input['suburb'] = str_replace(' ', '', strtolower($input['suburb']));
 		$newPatron = patrons::create($input);
 
@@ -170,7 +185,7 @@ class HomeController extends Controller {
 				    'softDelete' => '1'
 				]);
 		}
-		return redirect('event/'.$eventID);
+		return redirect('eventAdmin/'.$eventID);
 	}
 
 	/**
@@ -210,7 +225,19 @@ class HomeController extends Controller {
 		$patron->save();
 		return redirect('patron/'.$patronID);
 	}
-
+	/**
+	 * detele Patron.
+	 *
+	 * @return Response
+	 */
+	public function deletePatron($patronID)
+	{
+		patrons::where('id', $patronID)->delete();
+		DB::table('event_patron')
+            	->where( 'event_patron.patron_id', '=', $patronID)
+				->delete();	
+		return redirect('patron/');
+	}
 	/**
 	 * getPatronsInEvent = array of objects with patron's details going to the event
 	 *

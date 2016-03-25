@@ -10,7 +10,7 @@
     </div><!-- /modal-header -->
     <div class="modal-body">
       <label>Address:</label> 
-      <span> {{$patron->address}}, {{ucfirst($patron->suburb)}}, {{$patron->postcode}} </span>
+      <span>{{ucfirst($patron->suburb)}} </span>
     </div><!-- /modal-body -->
     <div class="modal-footer">
       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

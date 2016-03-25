@@ -26,13 +26,6 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
-                    <label class="col-md-4 control-label">Address</label>
-                    <div class="col-md-6">
-                      <input type="text" class="form-control" name="address" value="{{$patron->address}}">
-                    </div>
-                  </div>
-
 
                   <div class="form-group">
                     <label class="col-md-4 control-label">Suburb/city</label>
@@ -72,11 +65,24 @@
                   </div>
                 </form>
 
+                <button type="button" class="btn btn-danger pull-right deletePatron" id="deletePatron{{$patron->id}}">Delete Patron</button>
             </div>
         </div>
     </div>
     <div class="col-md-2"></div>
 </div>
 
+<script>
+$( document ).ready(function() {
+  $('.deletePatron').on('click', function (e) {
+    var $this = $(this);
+    var patronID = $this.attr("id").substring(12);
+    $.get( "/deletePatron/"+patronID, function( data ) {
+        window.location.replace("{{url('patron')}}");
+    });
+  });
+});
 
+
+</script>
 @endsection

@@ -35,6 +35,7 @@ Route::get('deleteNearbySet/{nearbyset}', 'HomeController@deleteNearbySet');
 Route::get('patron', 'HomeController@getPetronList');
 Route::get('patron/{patronID}', 'HomeController@showPatron');
 Route::post('editPatron/{patronID}', 'HomeController@editPatron');
+Route::get('deletePatron/{patronID}', 'HomeController@deletePatron');
 Route::get('getPatronsInEvent/{eventID}', 'HomeController@getPatronsInEvent');
 Route::get('toggleEventPatron/{eventID}/{patronID}/{toggleID}', 'HomeController@toggleEventPatron');
 Route::get('postCarThere/{eventID}/{patronID}/{driverID}', 'HomeController@postCarThere');
