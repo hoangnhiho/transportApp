@@ -26,8 +26,27 @@
         height:60px;
         width:60px;
     }
-    @media (min-device-height: 773px) and (min-device-width: 435px) and (-webkit-min-device-pixel-ratio: 3){
+    @media (min-width : 436px) and (max-width : 520px){
       /* some CSS here */
+        .patronDetailRow{
+            min-height: 55px;
+        }
+        input[type='checkbox'] {
+            width: 45px;
+            height: 45px;
+        }
+        .displayPic{
+            max-width: 60px;
+        }
+        .img-thumbnail{
+            width: 50px !important;
+        }
+    }
+    @media (min-width : 521px) and (max-width : 991px){
+        input[type='checkbox'] {
+            width: 70px;
+            height: 70px;
+        }
     }
 </style>
 <div class='row' style="width:95%;margin:auto">
