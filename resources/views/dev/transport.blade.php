@@ -6,7 +6,7 @@
         width: 25px;
         height: 25px;
     }
-    @media (max-width : 430px) {
+    @media (max-width : 436px) {
         input[type='checkbox'] {
             width: 45px;
             height: 45px;
@@ -23,9 +23,12 @@
         }
     }
     .passenger-container { 
-height:60px;
-width:60px;
-}
+        height:60px;
+        width:60px;
+    }
+    @media (min-device-height: 773px) and (min-device-width: 435px) and (-webkit-min-device-pixel-ratio: 3){
+      /* some CSS here */
+    }
 </style>
 <div class='row' style="width:95%;margin:auto">
     <div class="col-md-3 dummyColumn" style="display:none"></div>
@@ -69,17 +72,17 @@ width:60px;
             </div>
 			<div class="panel-body collapse in" id='patronList'>
                 <div>
-                    <div class="row">
+                    <!--<div class="row">
                         <div class="col-md-1">
-                            <!-- <input type="checkbox" id="checkAll">  -->
+                           
                         </div>
                         <div class="col-xs-12 col-md-5"><b>Patron's details</b></div>
                         <div class="col-xs-6 col-md-3"><b>Pref To</b></div>
                         <div class="col-xs-6 col-md-3"><b>Pref Back</b></div>
                     </div>
-                    <hr class="col-xs-12 col-md-12" style="margin-top: 0px; margin-bottom: 10px;">
+                    <hr class="col-xs-12 col-md-12" style="margin-top: 0px; margin-bottom: 10px;">-->
                     <div class="row">
-                        <div class="col-md-1"></div>
+                        <div class="col-xs-1 col-md-1"></div>
                         <div id="sort-all" class="col-xs-1 col-md-1 btn btn-primary active sort-selection">All</div>
                         <div id="sort-AD" class="col-xs-1 col-md-1 btn btn-primary sort-selection">A-D</div>
                         <div id="sort-EG" class="col-xs-1 col-md-1 btn btn-primary sort-selection">E-G</div>
@@ -88,20 +91,20 @@ width:60px;
                         <div id="sort-RV" class="col-xs-1 col-md-1 btn btn-primary sort-selection">R-V</div>
                         <div id="sort-WZ" class="col-xs-1 col-md-1 btn btn-primary sort-selection">W-Z</div>
                         <div id="sort-grid" class="col-xs-1 col-md-1 btn btn-primary sort-selection">Grid</div>
-                        <div class="col-md-3"></div>
+                        <div class="col-xs-2 col-md-2"></div>
                     </div>
                     <hr class="col-xs-12 col-md-12" style="margin-top: 0px; margin-bottom: 10px;">
                 </div>
                 <div id="patron-rows">
                 @foreach ($patronsInEvent as $patron) 
-                    <div id="row-{{$patron->id}}-{{$patron->name}}" class="row patron-row">
+                    <div id="row-{{$patron->name}}" class="row patron-row">
                         <div class="col-xs-2 col-md-1">
                             <input type="checkbox" id="patron{{$patron->id}}" @if ($patron->softDelete =='1') checked @endif> 
                         </div>
-                        <div class="col-xs-2 col-md-2 displayPic">
+                        <div class="col-xs-2 col-sm-3 col-md-2 displayPic">
                             <img src="{{$patron->picurl}}" alt="patronPic" class="img-thumbnail" style="width: 100%"> 
                         </div>
-                        <div class="col-xs-8 col-md-3 patronDetailRow">
+                        <div class="col-xs-8 col-sm-7 col-md-3 patronDetailRow">
                             <div class="row">
                                 <div class="col-md-12">
                                     <a href="{{url('patron/'.$patron->id)}}">{{ucwords($patron->name)}}</a>
@@ -265,75 +268,88 @@ $( document ).ready(function() {
             $(this).removeClass('active');
         } else {
             $(this).addClass('active');
-            $('#sort-AD').removeClass('active');
-            $('#sort-EG').removeClass('active');
-            $('#sort-HL').removeClass('active');
-            $('#sort-MQ').removeClass('active');
-            $('#sort-RV').removeClass('active');
-            $('#sort-WZ').removeClass('active');
+            removeActiveSortSelections();
+            $("#patron-rows").children().each(function(){
+                $(this).show();
+            });  
         }
     });
 
     //=== show A-D ===//
     $('#sort-AD').on('click', function() {
+        removeActiveSortSelections();
         if($(this).hasClass('active')){
             $(this).removeClass('active');
+            showOrDisplay();
         } else {
             $('#sort-all').removeClass('active');
             $(this).addClass('active');
-            $("#patron-rows").children().each(function(){
-                console.log($(this).attr('id'));
-            });   
+            showOrDisplay();
         }
     });
 
     //=== show E-G ===//
     $('#sort-EG').on('click', function() {
+        removeActiveSortSelections();
         if($(this).hasClass('active')){
             $(this).removeClass('active');
+            showOrDisplay();
         } else {
             $('#sort-all').removeClass('active');
             $(this).addClass('active');
+            showOrDisplay();
         } 
     });
 
     //=== show H-L ===//
     $('#sort-HL').on('click', function() {
+        removeActiveSortSelections();
         if($(this).hasClass('active')){
             $(this).removeClass('active');
+            showOrDisplay();
         } else {
             $('#sort-all').removeClass('active');
             $(this).addClass('active');
+            showOrDisplay();
         }
     });
 
     //=== show M-Q ===//
     $('#sort-MQ').on('click', function() {
+        removeActiveSortSelections();
         if($(this).hasClass('active')){
             $(this).removeClass('active');
+            showOrDisplay();
         } else {
             $('#sort-all').removeClass('active');
             $(this).addClass('active');
+            showOrDisplay();
         }
     });
 
     //=== show R-V ===//
     $('#sort-RV').on('click', function() {
+        removeActiveSortSelections();
         if($(this).hasClass('active')){
             $(this).removeClass('active');
+            showOrDisplay();
         } else {
             $('#sort-all').removeClass('active');
             $(this).addClass('active');
+            showOrDisplay();
         }
     });
 
     //=== show W-Z ===//
     $('#sort-WZ').on('click', function() {
+        removeActiveSortSelections();
         if($(this).hasClass('active')){
             $(this).removeClass('active');
+            showOrDisplay();
         } else {
             $('#sort-all').removeClass('active');
             $(this).addClass('active');
+            showOrDisplay();
         }
     });
     
@@ -367,14 +383,13 @@ $( document ).ready(function() {
             $.get( "/toggleEventPatron/"+eventID+"/"+patronID+"/"+"0", function( data ) {});
         }
     });
-
+    //=== clear all / uncheck all boxes ===//
     $("#clearAllBtn").on('click', function(){
         $('input:checkbox').removeAttr('checked');
         $('.carthereOptions').val($(".carthereOptions option:first").val());
         $('.carbackOptions').val($(".carbackOptions option:first").val());
         $.get( "/clearAllPatron/"+eventID, function( data ) {});
     });
-
     //=== CarThereOptions Ajax calls ===//
     $('.carthereOptions').on('change', function (e) {
         var tempVar = $(this).children(":selected").attr("id").substring(8).split('-');
@@ -396,6 +411,63 @@ $( document ).ready(function() {
             //console.log(data);
         });
     });
+
+    function removeActiveSortSelections(){
+        $('#sort-AD').removeClass('active');
+        $('#sort-EG').removeClass('active');
+        $('#sort-HL').removeClass('active');
+        $('#sort-MQ').removeClass('active');
+        $('#sort-RV').removeClass('active');
+        $('#sort-WZ').removeClass('active');
+    }
+
+    function showOrDisplay(){
+        $("#patron-rows").children().each(function(){
+            if($('#sort-AD').hasClass('active') &&
+                ($(this).attr('id').toLowerCase().substring(4,5) == 'a' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'b' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'c' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'd')){
+                $(this).show();
+            } else if($('#sort-EG').hasClass('active') &&
+                ($(this).attr('id').toLowerCase().substring(4,5) == 'e' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'f' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'g')){
+                $(this).show();
+            } else if($('#sort-HL').hasClass('active') &&
+                ($(this).attr('id').toLowerCase().substring(4,5) == 'h' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'i' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'i' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'k' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'l')){
+                $(this).show();
+            } else if($('#sort-MQ').hasClass('active') &&
+                ($(this).attr('id').toLowerCase().substring(4,5) == 'm' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'n' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'o' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'p' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'q')){
+                $(this).show();
+            } else if($('#sort-RV').hasClass('active') &&
+                ($(this).attr('id').toLowerCase().substring(4,5) == 'r' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 's' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 't' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'u' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'v')){
+                $(this).show();
+            } else if($('#sort-WZ').hasClass('active') &&
+                ($(this).attr('id').toLowerCase().substring(4,5) == 'w' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'x' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'y' ||
+                $(this).attr('id').toLowerCase().substring(4,5) == 'z')){
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });  
+    }
+    
+
     //=== run algorithm uses Ajax calls to retrive data===//
     function runAlgorithm() {
         arrayPatron = []
