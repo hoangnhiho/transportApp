@@ -135,6 +135,7 @@ class HomeController extends Controller {
 		$patronsInEvent = DB::table('event_patron')
 			->where('event_id', $eventID)
 	    	->join('patrons', 'event_patron.patron_id', '=', 'patrons.id')
+	    	->orderBy('name','asc')
 			->get();
 		return view('dev.transport', ['publicShow' => 'publicShow', 'eventID' => $eventID, 'patronsInEvent' => $patronsInEvent, 'events' => $events, 'nearbySets' => $nearbySets]);
 	}
@@ -252,7 +253,17 @@ class HomeController extends Controller {
 				->get();
 		return array_merge($PatronsInEvent, $nearbySets);
 	}
-
+	/**
+	 * getPatronsInEvent = array of objects with patron's details going to the event
+	 *
+	 * @return Array of Objects
+	 */
+	public function clearAllPatron($eventID)
+	{
+		$PatronsInEvent = DB::table('event_patron')
+				->where('event_id', $eventID)
+            	->update(['carthere' => 'none', 'carback' => 'none', 'softDelete' => '0']);
+	}
 	/**
 	 * getPatronsInEvent = array of objects with patron's details going to the event
 	 *

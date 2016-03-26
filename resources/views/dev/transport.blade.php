@@ -60,27 +60,48 @@ width:60px;
                 <button type="button" class="btn btn-success btn-sm pull-right" id="refreshBtn" style="padding: 2px 5px 0px 5px; margin-left:3px;">
                     <spam class="glyphicon glyphicon-refresh" aria-hidden="true"></spam>
                 </button>
+                @if (!isset($publicShow))
+                <button type="button" class="btn btn-danger btn-sm pull-right" id="clearAllBtn" style="padding: 2px 5px 0px 5px; margin-left:3px;">
+                    Clear All
+                </button>
+                @endif
                 </div>
             </div>
 			<div class="panel-body collapse in" id='patronList'>
-                <div class="row">
-                    <div class="col-md-1">
-                        <!-- <input type="checkbox" id="checkAll">  -->
-                    </div>
-                    <div class="col-xs-12 col-md-5"><b>Patron's details</b></div>
-                    <div class="col-xs-6 col-md-3"><b>Pref To</b></div>
-                    <div class="col-xs-6 col-md-3"><b>Pref Back</b></div>
-                </div>
-                <hr style="margin-top: 0px; margin-bottom: 10px;">
-                @foreach ($patronsInEvent as $patron) 
+                <div>
                     <div class="row">
+                        <div class="col-md-1">
+                            <!-- <input type="checkbox" id="checkAll">  -->
+                        </div>
+                        <div class="col-xs-12 col-md-5"><b>Patron's details</b></div>
+                        <div class="col-xs-6 col-md-3"><b>Pref To</b></div>
+                        <div class="col-xs-6 col-md-3"><b>Pref Back</b></div>
+                    </div>
+                    <hr class="col-xs-12 col-md-12" style="margin-top: 0px; margin-bottom: 10px;">
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div id="sort-all" class="col-xs-1 col-md-1 btn btn-primary active sort-selection">All</div>
+                        <div id="sort-AD" class="col-xs-1 col-md-1 btn btn-primary sort-selection">A-D</div>
+                        <div id="sort-EG" class="col-xs-1 col-md-1 btn btn-primary sort-selection">E-G</div>
+                        <div id="sort-HL" class="col-xs-1 col-md-1 btn btn-primary sort-selection">H-L</div>
+                        <div id="sort-MQ" class="col-xs-1 col-md-1 btn btn-primary sort-selection">M-Q</div>
+                        <div id="sort-RV" class="col-xs-1 col-md-1 btn btn-primary sort-selection">R-V</div>
+                        <div id="sort-WZ" class="col-xs-1 col-md-1 btn btn-primary sort-selection">W-Z</div>
+                        <div id="sort-grid" class="col-xs-1 col-md-1 btn btn-primary sort-selection">Grid</div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <hr class="col-xs-12 col-md-12" style="margin-top: 0px; margin-bottom: 10px;">
+                </div>
+                <div id="patron-rows">
+                @foreach ($patronsInEvent as $patron) 
+                    <div id="row-{{$patron->id}}-{{$patron->name}}" class="row patron-row">
                         <div class="col-xs-2 col-md-1">
                             <input type="checkbox" id="patron{{$patron->id}}" @if ($patron->softDelete =='1') checked @endif> 
                         </div>
-                        <div class="col-xs-2 col-md-1 displayPic">
+                        <div class="col-xs-2 col-md-2 displayPic">
                             <img src="{{$patron->picurl}}" alt="patronPic" class="img-thumbnail" style="width: 100%"> 
                         </div>
-                        <div class="col-xs-8 col-md-4 patronDetailRow">
+                        <div class="col-xs-8 col-md-3 patronDetailRow">
                             <div class="row">
                                 <div class="col-md-12">
                                     <a href="{{url('patron/'.$patron->id)}}">{{ucwords($patron->name)}}</a>
@@ -139,8 +160,9 @@ width:60px;
                             </select>
                         </div>
                     </div>
-                    <p></p>
+                    
                 @endforeach
+                </div>
 			</div>
 		</div>
 
@@ -237,7 +259,96 @@ $( document ).ready(function() {
 		eventID = $(this).attr('id');
 	});
 
-	//=== force run Algorithm ===//
+    //=== show All ===//
+    $('#sort-all').on('click', function() {
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+        } else {
+            $(this).addClass('active');
+            $('#sort-AD').removeClass('active');
+            $('#sort-EG').removeClass('active');
+            $('#sort-HL').removeClass('active');
+            $('#sort-MQ').removeClass('active');
+            $('#sort-RV').removeClass('active');
+            $('#sort-WZ').removeClass('active');
+        }
+    });
+
+    //=== show A-D ===//
+    $('#sort-AD').on('click', function() {
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+        } else {
+            $('#sort-all').removeClass('active');
+            $(this).addClass('active');
+            $("#patron-rows").children().each(function(){
+                console.log($(this).attr('id'));
+            });   
+        }
+    });
+
+    //=== show E-G ===//
+    $('#sort-EG').on('click', function() {
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+        } else {
+            $('#sort-all').removeClass('active');
+            $(this).addClass('active');
+        } 
+    });
+
+    //=== show H-L ===//
+    $('#sort-HL').on('click', function() {
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+        } else {
+            $('#sort-all').removeClass('active');
+            $(this).addClass('active');
+        }
+    });
+
+    //=== show M-Q ===//
+    $('#sort-MQ').on('click', function() {
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+        } else {
+            $('#sort-all').removeClass('active');
+            $(this).addClass('active');
+        }
+    });
+
+    //=== show R-V ===//
+    $('#sort-RV').on('click', function() {
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+        } else {
+            $('#sort-all').removeClass('active');
+            $(this).addClass('active');
+        }
+    });
+
+    //=== show W-Z ===//
+    $('#sort-WZ').on('click', function() {
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+        } else {
+            $('#sort-all').removeClass('active');
+            $(this).addClass('active');
+        }
+    });
+    
+    //=== show Grid ===//
+    $('#sort-grid').on('click', function() {
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+        } else {
+            //$('#sort-All').removeClass('active');
+            $(this).addClass('active');
+
+        }
+    });
+	
+    //=== force run Algorithm ===//
 	$('#load').on('click', function() {
 		runAlgorithm();
 	});
@@ -255,6 +366,13 @@ $( document ).ready(function() {
             $('#carback'+patronID+'-none').prop('selected', true);
             $.get( "/toggleEventPatron/"+eventID+"/"+patronID+"/"+"0", function( data ) {});
         }
+    });
+
+    $("#clearAllBtn").on('click', function(){
+        $('input:checkbox').removeAttr('checked');
+        $('.carthereOptions').val($(".carthereOptions option:first").val());
+        $('.carbackOptions').val($(".carbackOptions option:first").val());
+        $.get( "/clearAllPatron/"+eventID, function( data ) {});
     });
 
     //=== CarThereOptions Ajax calls ===//
