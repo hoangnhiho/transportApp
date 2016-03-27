@@ -48,6 +48,49 @@
             height: 70px;
         }
     }
+    .name-tagOverlay {
+      position: absolute;
+      min-height:5px;
+      min-width:20px;
+      height: 25%;
+      width: 90%;
+      top: 65%;
+      opacity: 0.6;
+      background-size: cover;
+      background-image: url("{{ URL::to('/') }}/img/name-tag.png");
+      color: white;
+      font-weight: bold;
+      font-size: 9px;
+      padding-left: 4px;
+      padding-top: 1px;
+    }
+    .patron-square {
+        -webkit-filter: grayscale(100%);
+        filter: grayscale(100%);
+        padding: 1px !important;
+        opacity:0.4;
+    }
+    .active-square {
+        -webkit-filter: grayscale(0%);
+        filter: grayscale(0%);
+        opacity:1;
+    }
+    .active-driver-square {
+        /*display:block;*/
+    }
+    .driver-tagOverlay {
+      position: absolute;
+      min-height:15px;
+      min-width:5px;
+      height: 100%;
+      width: 100%;
+      top: 0%;
+      right: 0%;
+      opacity: 0.8;
+      background-size: cover;
+      background-image: url("{{ URL::to('/') }}/img/driver-tag.png");
+    }
+
 </style>
 <div class='row' style="width:95%;margin:auto">
     <div class="col-md-3 dummyColumn" style="display:none"></div>
@@ -109,10 +152,84 @@
                         <div id="sort-MQ" class="col-xs-1 col-md-1 btn btn-primary sort-selection">M-Q</div>
                         <div id="sort-RV" class="col-xs-1 col-md-1 btn btn-primary sort-selection">R-V</div>
                         <div id="sort-WZ" class="col-xs-1 col-md-1 btn btn-primary sort-selection">W-Z</div>
-                        <div id="sort-grid" class="col-xs-1 col-md-1 btn btn-primary sort-selection">Grid</div>
+                        <div id="sort-grid" class="col-xs-1 col-md-1 btn btn-primary active sort-selection">Grid</div>
                         <div class="col-xs-2 col-md-2"></div>
                     </div>
                     <hr class="col-xs-12 col-md-12" style="margin-top: 0px; margin-bottom: 10px;">
+                </div>
+                <div id="patron-grid">
+                    <div id="AD-header" class="col-xs-12 col-sm-12 col-md-12 alpha-header" style="color:navy">A-D</div>
+                    <div id="grid-AD">
+                        @foreach ($patronsInEvent as $patron) 
+                            @if ($patron->name[0] == "A" || $patron->name[0] == "B" ||  $patron->name[0] == "C" ||  $patron->name[0] == "D")
+                                <div id="square-{{$patron->id}}" data-name="{{$patron->name}}" class="patron-square @if ($patron->softDelete =='1') active-square @endif @if ($patron->carthere == 'driving') active-driver-square @endif col-xs-2 col-sm-2 col-md-2" style="padding:0px">
+                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%">
+                                    <div class="name-tagOverlay">{{$patron->name}}</div>
+                                    <div class="driver-tagOverlay"></div>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div id="EG-header" class="col-xs-12 col-sm-12 col-md-12 alpha-header" style="color:navy">E-G</div>
+                    <div id="grid-EG">
+                        @foreach ($patronsInEvent as $patron) 
+                            @if ($patron->name[0] == "E" || $patron->name[0] == "F" ||  $patron->name[0] == "G")
+                                <div id="square-{{$patron->id}}" data-name="{{$patron->name}}" class="patron-square @if ($patron->softDelete =='1') active-square @endif @if ($patron->carthere == 'driving') active-driver-square @endif col-xs-2 col-sm-2 col-md-2" style="padding:0px">
+                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%">
+                                    <div class="name-tagOverlay">{{$patron->name}}</div>
+                                    <div class="driver-tagOverlay"></div>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div id="HL-header" class="col-xs-12 col-sm-12 col-md-12 alpha-header" style="color:navy">H-L</div>
+                    <div id="grid-HL">
+                        @foreach ($patronsInEvent as $patron) 
+                            @if ($patron->name[0] == "H" || $patron->name[0] == "I" ||  $patron->name[0] == "J" ||  $patron->name[0] == "K" ||  $patron->name[0] == "L")
+                                <div id="square-{{$patron->id}}" data-name="{{$patron->name}}" class="patron-square @if ($patron->softDelete =='1') active-square @endif @if ($patron->carthere == 'driving') active-driver-square @endif col-xs-2 col-sm-2 col-md-2" style="padding:0px">
+                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%">
+                                    <div class="name-tagOverlay">{{$patron->name}}</div>
+                                    <div class="driver-tagOverlay"></div>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div id="MQ-header" class="col-xs-12 col-sm-12 col-md-12 alpha-header" style="color:navy">M-Q</div>
+                    <div id="grid-MQ">
+                        @foreach ($patronsInEvent as $patron) 
+                            @if ($patron->name[0] == "M" || $patron->name[0] == "N" ||  $patron->name[0] == "O" ||  $patron->name[0] == "P" ||  $patron->name[0] == "Q")
+                                <div id="square-{{$patron->id}}" data-name="{{$patron->name}}" class="patron-square @if ($patron->softDelete =='1') active-square @endif @if ($patron->carthere == 'driving') active-driver-square @endif col-xs-2 col-sm-2 col-md-2" style="padding:0px">
+                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%">
+                                    <div class="name-tagOverlay">{{$patron->name}}</div>
+                                    <div class="driver-tagOverlay"></div>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div id="RV-header" class="col-xs-12 col-sm-12 col-md-12 alpha-header" style="color:navy">R-V</div>
+                    <div id="grid-RV">
+                        @foreach ($patronsInEvent as $patron) 
+                            @if ($patron->name[0] == "R" || $patron->name[0] == "S" ||  $patron->name[0] == "T" ||  $patron->name[0] == "U" ||  $patron->name[0] == "V")
+                                <div id="square-{{$patron->id}}" data-name="{{$patron->name}}" class="patron-square @if ($patron->softDelete =='1') active-square @endif @if ($patron->carthere == 'driving') active-driver-square @endif col-xs-2 col-sm-2 col-md-2" style="padding:0px">
+                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%">
+                                    <div class="name-tagOverlay">{{$patron->name}}</div>
+                                    <div class="driver-tagOverlay"></div>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div id="WZ-header" class="col-xs-12 col-sm-12 col-md-12 alpha-header" style="color:navy">W-Z</div>
+                    <div id="grid-WZ">
+                        @foreach ($patronsInEvent as $patron) 
+                            @if ($patron->name[0] == "W" || $patron->name[0] == "X" ||  $patron->name[0] == "Y" ||  $patron->name[0] == "Z")
+                                <div id="square-{{$patron->id}}" data-name="{{$patron->name}}" class="patron-square @if ($patron->softDelete =='1') active-square @endif @if ($patron->carthere == 'driving') active-driver-square @endif col-xs-2 col-sm-2 col-md-2" style="padding:0px">
+                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%">
+                                    <div class="name-tagOverlay">{{$patron->name}}</div>
+                                    <div class="driver-tagOverlay"></div>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
                 </div>
                 <div id="patron-rows">
                 @foreach ($patronsInEvent as $patron) 
@@ -185,6 +302,7 @@
                     
                 @endforeach
                 </div>
+                
 			</div>
 		</div>
 
@@ -248,6 +366,39 @@ suburbs = {
     SASL:7, SATW:6, SATR:7, SAAU:5, SAIN:6, SACA:9, SAKA:5, SAWA:3, SAOA:4, SASA:1 
 };
 $( document ).ready(function() {
+    $('#patron-rows').hide();
+
+    $("#grid-AD").children().each(function(){
+        if(!$(this).hasClass('active-driver-square')){
+            $(this).children('.driver-tagOverlay').hide();
+        }
+    });
+    $("#grid-EG").children().each(function(){
+        if(!$(this).hasClass('active-driver-square')){
+            $(this).children('.driver-tagOverlay').hide();
+        }
+    });
+    $("#grid-HL").children().each(function(){
+        if(!$(this).hasClass('active-driver-square')){
+            $(this).children('.driver-tagOverlay').hide();
+        }
+    });
+    $("#grid-MQ").children().each(function(){
+        if(!$(this).hasClass('active-driver-square')){
+            $(this).children('.driver-tagOverlay').hide();
+        }
+    });
+    $("#grid-RV").children().each(function(){
+        if(!$(this).hasClass('active-driver-square')){
+            $(this).children('.driver-tagOverlay').hide();
+        }
+    });
+    $("#grid-WZ").children().each(function(){
+        if(!$(this).hasClass('active-driver-square')){
+            $(this).children('.driver-tagOverlay').hide();
+        }
+    });
+
 	//Page load settings
     var URL = window.location.origin;
 	var eventID = {!!$eventID!!};
@@ -279,7 +430,39 @@ $( document ).ready(function() {
 		$('.events').removeClass('active');
 		$(this).addClass('active');
 		eventID = $(this).attr('id');
-	});
+    });
+
+    $('.patron-square').on('click', function() {
+        var patronID = $(this).attr("id").substring(7);
+        //console.log(patronID);
+        var $this = $(this);
+        if($(this).hasClass("active-square") && $(this).hasClass("active-driver-square")){//change to none
+
+            $.get( "/changeEventPatronStatus/"+eventID+"/"+patronID+"/"+"none").success(function(data){
+                $this.removeClass("active-square");
+                $this.removeClass("active-driver-square");
+                $this.find('.driver-tagOverlay').hide();
+                $('#carthere'+patronID+'-none').prop('selected', true);
+                $('#carback'+patronID+'-none').prop('selected', true);
+                $('#patron'+patronID).attr('checked', false); 
+            });
+        } else if ($(this).hasClass("active-square")){//change to driving
+            $.get( "/changeEventPatronStatus/"+eventID+"/"+patronID+"/"+"driving").success(function(data){
+                $this.addClass("active-driver-square");
+                $this.find('.driver-tagOverlay').show();
+                $('#carthere'+patronID+'-driving').prop('selected', true);
+                $('#carback'+patronID+'-driving').prop('selected', true);
+                $('#patron'+patronID).attr('checked', true); 
+            });
+        } else {//change to any
+            $.get( "/changeEventPatronStatus/"+eventID+"/"+patronID+"/"+"any").success(function(data){
+                $('#carthere'+patronID+'-any').prop('selected', true);
+                $('#carback'+patronID+'-any').prop('selected', true);
+                $('#patron'+patronID).attr('checked', true); 
+                $this.addClass("active-square");
+            });
+        }
+    });
 
     //=== show All ===//
     $('#sort-all').on('click', function() {
@@ -291,6 +474,28 @@ $( document ).ready(function() {
             $("#patron-rows").children().each(function(){
                 $(this).show();
             });  
+            $("#grid-AD").children().each(function(){
+                $(this).show();
+            });
+            $("#grid-EG").children().each(function(){
+                $(this).show();
+            });
+            $("#grid-HL").children().each(function(){
+                $(this).show();
+            });
+            $("#grid-MQ").children().each(function(){
+                $(this).show();
+            });
+            $("#grid-RV").children().each(function(){
+                $(this).show();
+            });
+            $("#grid-WZ").children().each(function(){
+                $(this).show();
+            });
+            $("#patron-grid").find(".alpha-header").each(function(){
+                //console.log($(this).attr('id'));
+                $(this).show();                                  
+            });
         }
     });
 
@@ -376,10 +581,15 @@ $( document ).ready(function() {
     $('#sort-grid').on('click', function() {
         if($(this).hasClass('active')){
             $(this).removeClass('active');
+            $("#patron-rows").show();
+            $('#patron-grid').hide();
         } else {
-            //$('#sort-All').removeClass('active');
             $(this).addClass('active');
-
+            // $("#patron-rows").children().each(function(){
+            //     $(this).hide();
+            // }); 
+            $("#patron-rows").hide();
+            $('#patron-grid').show();
         }
     });
 	
@@ -418,6 +628,12 @@ $( document ).ready(function() {
         $.get( "/postCarThere/"+eventID+"/"+patronId+"/"+driverId, function( data ) {
             //console.log(data);
         });
+        if (driverId == 'driving'){
+            $.get( "/postCarBack/"+eventID+"/"+patronId+"/"+driverId, function( data ) {
+                //console.log(data);
+                $('#carback'+patronId+'-driving').prop('selected', true);
+            });
+        }
     });
 
     //=== CarBackOptions Ajax calls ===//
@@ -483,10 +699,93 @@ $( document ).ready(function() {
             } else {
                 $(this).hide();
             }
-        });  
+        }); 
+        $("#grid-AD").children().each(function(){
+            if($('#sort-AD').hasClass('active') &&
+                ($(this).attr('data-name').toLowerCase().substring(0,1) == 'a' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'b' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'c' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'd')){
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+        $("#grid-EG").children().each(function(){
+            if($('#sort-EG').hasClass('active') &&
+                ($(this).attr('data-name').toLowerCase().substring(0,1) == 'e' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'f' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'g')){
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+        $("#grid-HL").children().each(function(){
+            if($('#sort-HL').hasClass('active') &&
+                ($(this).attr('data-name').toLowerCase().substring(0,1) == 'h' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'i' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'j' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'k' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'l')){
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+        $("#grid-MQ").children().each(function(){
+            if($('#sort-MQ').hasClass('active') &&
+                ($(this).attr('data-name').toLowerCase().substring(0,1) == 'm' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'n' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'o' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'q')){
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+        $("#grid-RV").children().each(function(){
+            if($('#sort-RV').hasClass('active') &&
+                ($(this).attr('data-name').toLowerCase().substring(0,1) == 'r' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 's' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 't' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'u' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'v')){
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+        $("#grid-WZ").children().each(function(){
+            if($('#sort-WZ').hasClass('active') &&
+                ($(this).attr('data-name').toLowerCase().substring(0,1) == 'w' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'x' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'y' ||
+                $(this).attr('data-name').toLowerCase().substring(0,1) == 'z')){
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+        $("#patron-grid").find(".alpha-header").each(function(){
+            //console.log($(this).attr('id'));
+            $(this).hide();            
+        });
+        if($('#sort-AD').hasClass('active')){
+            $("#AD-header").show();
+        } else if($('#sort-EG').hasClass('active')){
+            $("#EG-header").show();
+        } else if($('#sort-HL').hasClass('active')){
+            $("#HL-header").show();
+        } else if($('#sort-MQ').hasClass('active')){
+            $("#MQ-header").show();
+        } else if($('#sort-RV').hasClass('active')){
+            $("#RV-header").show();
+        } else if($('#sort-WZ').hasClass('active')){
+            $("#WZ-header").show();
+        }          
     }
     
-
     //=== run algorithm uses Ajax calls to retrive data===//
     function runAlgorithm() {
         arrayPatron = []

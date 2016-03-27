@@ -6247,3 +6247,10 @@ label,
 .checkbox label {
   font-weight: 300;
 }
+.sort-selection {
+  font-size:10px;
+  overflow:hidden;
+  width:10%;
+  padding:0px;
+  background-color: #D6EAF8;
+}
