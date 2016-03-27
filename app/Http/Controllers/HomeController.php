@@ -169,7 +169,7 @@ class HomeController extends Controller {
 	{
 		$input = Request::all();
 		if ($input['password'] != 'secret') return 'You are not admin! stop trying to hack me!';
-		if ($input['picurl'] == '' || !isset($input['picurl'])) $input['picurl'] = "https://www.sparklabs.com/forum/styles/comboot/theme/images/default_avatar.jpg";
+		if ($input['picurl'] == '' || !isset($input['picurl'])) $input['picurl'] = "https://s.ytimg.com/yts/img/avatar_720-vflYJnzBZ.png";
 		$input['suburb'] = str_replace(' ', '', strtolower($input['suburb']));
 		$newPatron = patrons::create($input);
 
@@ -294,6 +294,31 @@ class HomeController extends Controller {
 	            ->where('patron_id', $patronID)
 	            ->update(['carback' => 'any']);
 	    }
+	}	
+	/**
+	 * getPatronsInEvent = array of objects with patron's details going to the event
+	 *
+	 * @return Array of Objects
+	 */
+	public function changeEventPatronStatus($eventID, $patronID, $status)
+	{
+		if ($status == 'driving'){
+			DB::table('event_patron')
+	            ->where('event_id', $eventID)
+	            ->where('patron_id', $patronID)
+	            ->update(['softDelete' => '1', 'carthere' => 'driving' , 'carback' => 'driving']);
+		}elseif ($status == 'any'){
+			DB::table('event_patron')
+	            ->where('event_id', $eventID)
+	            ->where('patron_id', $patronID)
+	            ->update(['softDelete' => '1', 'carthere' => 'any' , 'carback' => 'any']);
+		}else{
+			DB::table('event_patron')
+	            ->where('event_id', $eventID)
+	            ->where('patron_id', $patronID)
+	            ->update(['softDelete' => '0', 'carthere' => 'none' , 'carback' => 'none']);
+		}
+		return 'yay';
 	}
 	
 	/**
@@ -306,7 +331,7 @@ class HomeController extends Controller {
 		DB::table('event_patron')
             ->where('event_id', $eventID)
             ->where('patron_id', $patronID)
-            ->update(['carthere' => $driverID]);
+            ->update(['carthere' => $driverID, 'carback' => $driverID]);
         if ($driverID != 'none'){
 			DB::table('event_patron')
 	            ->where('event_id', $eventID)
