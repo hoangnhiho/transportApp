@@ -170,6 +170,7 @@ class HomeController extends Controller {
 		$input = Request::all();
 		if ($input['password'] != 'secret') return 'You are not admin! stop trying to hack me!';
 		if ($input['picurl'] == '' || !isset($input['picurl'])) $input['picurl'] = "https://s.ytimg.com/yts/img/avatar_720-vflYJnzBZ.png";
+		$input['name'] = ucfirst($input['name']);
 		$input['suburb'] = str_replace(' ', '', strtolower($input['suburb']));
 		$newPatron = patrons::create($input);
 
@@ -222,6 +223,7 @@ class HomeController extends Controller {
 		$input = Request::all();
 		$patron=patrons::find($patronID);
 		$input['suburb'] = str_replace(' ', '', strtolower($input['suburb']));
+		$input['name'] = ucfirst($input['name']);
 		$patron->fill($input);
 		$patron->save();
 		return redirect('patron/'.$patronID);
