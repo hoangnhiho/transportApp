@@ -13,13 +13,15 @@
 	left: 62px;
 	top: 114px;
 	opacity: 0.5;
-
+	background-image: url("{{ URL::to('/') }}/img/red-tag.png");
+	height:10px;
+	width: 50px;
 }
 </style>
 <!--<div class="img-thumbnail" style="background-image: url({{ URL::to('/') }}/img/nhi.jpg)">-->
 <div class="img-thumbnail" style="background-image:url({{ URL::to('/') }}/img/nhi.jpg)">
 @if (1)
-    <img class="colored-tag" src="{{ URL::to('/') }}/img/purple-tag.png">
+    <div class="colored-tag"></div>
 @elseif (0)
     <img class="colored-tag" src="{{ URL::to('/') }}/img/red-tag.png">
 @else

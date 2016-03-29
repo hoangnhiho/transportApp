@@ -61,11 +61,11 @@
                   <div class="form-group">
                     <div class="col-md-6 col-md-offset-4">
                       <button type="submit" class="btn btn-primary">Save Patron</button>
+                      <button type="button" class="btn btn-danger deletePatron" id="deletePatron{{$patron->id}}">Delete Patron</button>
                     </div>
                   </div>
                 </form>
 
-                <button type="button" class="btn btn-danger pull-right deletePatron" id="deletePatron{{$patron->id}}">Delete Patron</button>
             </div>
         </div>
     </div>

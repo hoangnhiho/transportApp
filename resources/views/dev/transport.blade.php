@@ -617,6 +617,9 @@ $( document ).ready(function() {
         $('input:checkbox').removeAttr('checked');
         $('.carthereOptions').val($(".carthereOptions option:first").val());
         $('.carbackOptions').val($(".carbackOptions option:first").val());
+        $('.patron-square').removeClass('active-square');
+        $('.patron-square').removeClass('active-driver-square');
+        $('.driver-tagOverlay').hide();
         $.get( "/clearAllPatron/"+eventID, function( data ) {});
     });
     //=== CarThereOptions Ajax calls ===//
@@ -824,40 +827,54 @@ $( document ).ready(function() {
 
             var tempHTMLstring = '';
             var carCounter = 1;
+            var carPassenger = 1;
             planThere.forEach(function(car) {
                 tempHTMLstring += '<div class="row" id="transportThere'+carCounter+'">';
                 car.forEach(function(passenger){
                     //tempHTMLstring += '<div class="col-xs-2 col-md-2"><a data-toggle="modal" id="modalPatronThere'+passenger.id+'" href="'+URL+'/getModalPatron/'+passenger.id+'" data-target="#patronModal"><img src="'+passenger.picurl+'" class="img-thumbnail" alt="patronPic" id="imgPatronThere'+passenger.id+'"></a><p id="textPatronThere'+passenger.id+'">'+passenger.name+'</p></div>'
                     var tag_color = mapSubCodeToColor(passenger.suburb);
-                    tempHTMLstring +=   '<div class="col-xs-2 col-md-2">'+
-                                            '<a data-toggle="modal" id="modalPatronThere'+passenger.id+'" href="'+URL+'/getModalPatron/'+passenger.id+'" data-target="#patronModal">'+
+                    if (carPassenger == 1){
+                        tempHTMLstring +=   '<div class="col-xs-3 col-md-3">';
+                    }else{
+                        tempHTMLstring +=   '<div class="col-xs-2 col-md-2">';
+                    }
+                     tempHTMLstring += '<a data-toggle="modal" id="modalPatronThere'+passenger.id+'" href="'+URL+'/getModalPatron/'+passenger.id+'" data-target="#patronModal">'+
                                                 '<div><img src="'+passenger.picurl+'" class="img-thumbnail" alt="patronPic" id="imgPatronThere'+passenger.id+'"><img class="colored-tag" src="{{ URL::to('/') }}/img/'+tag_color+'-tag.png"></div>'+
                                             '</a>'+
                                             '<p id="textPatronThere'+passenger.id+'" class="name-field">'+passenger.name.substring(0, 8)+'</p>'+
-                                        '</div>'
+                                        '</div>';
+                                        carPassenger++;
                 });
                 tempHTMLstring += '</div>';
                 carCounter++;
+                carPassenger=1;
             });
             tempHTMLstring += '</div>';
             $('#transportThereList').append(tempHTMLstring);
 
             tempHTMLstring = '';
             carCounter = 1;
+            carPassenger = 1;
             planBack.forEach(function(car) {
                 tempHTMLstring += '<div class="row" id="transportBack'+carCounter+'">';
                 car.forEach(function(passenger){
                     //tempHTMLstring += '<div class="col-xs-2 col-md-2"><a data-toggle="modal" id="modalPatronBack'+passenger.id+'" href="'+URL+'/getModalPatron/'+passenger.id+'" data-target="#patronModal"><img src="'+passenger.picurl+'" class="img-thumbnail" alt="patronPic" id="imgPatronBack'+passenger.id+'"></a><p id="textPatronBack'+passenger.id+'">'+passenger.name+'</p></div>'
                     var tag_color = mapSubCodeToColor(passenger.suburb);
-                    tempHTMLstring +=   '<div class="col-xs-2 col-md-2">'+
-                                            '<a data-toggle="modal" id="modalPatronThere'+passenger.id+'" href="'+URL+'/getModalPatron/'+passenger.id+'" data-target="#patronModal">'+
+                    if (carPassenger == 1){
+                        tempHTMLstring +=   '<div class="col-xs-3 col-md-3">';
+                    }else{
+                        tempHTMLstring +=   '<div class="col-xs-2 col-md-2">';
+                    }
+                     tempHTMLstring += '<a data-toggle="modal" id="modalPatronThere'+passenger.id+'" href="'+URL+'/getModalPatron/'+passenger.id+'" data-target="#patronModal">'+
                                                 '<div><img src="'+passenger.picurl+'" class="img-thumbnail" alt="patronPic" id="imgPatronThere'+passenger.id+'"><img class="colored-tag" src="{{ URL::to('/') }}/img/'+tag_color+'-tag.png"></div>'+
                                             '</a>'+
                                             '<p id="textPatronThere'+passenger.id+'" class="name-field">'+passenger.name.substring(0, 8)+'</p>'+
-                                        '</div>'
+                                        '</div>';
+                                        carPassenger++;
                 });
                 tempHTMLstring += '</div>';
                 carCounter++;
+                carPassenger=1;
             });
             tempHTMLstring += '</div>';
             $('#transportBackList').append(tempHTMLstring);
