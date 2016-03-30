@@ -256,10 +256,6 @@
                                 <option id="carthere{{$patron->id}}-any" @if($patron->carthere == 'any') selected @endif>Passenger</option>
                                 <option id="carthere{{$patron->id}}-driving" @if($patron->carthere == 'driving') selected @endif>Driver</option>
                                 @if (!isset($publicShow))
-                                    <option id="carthere{{$patron->id}}-pEarly" @if($patron->carthere == 'pEarly') selected @endif>pEarly</option>
-                                    <option id="carthere{{$patron->id}}-pLate" @if($patron->carthere == 'pLate') selected @endif>pLate</option>
-                                    <option id="carthere{{$patron->id}}-dEarly" @if($patron->carthere == 'dEarly') selected @endif>dEarly</option>
-                                    <option id="carthere{{$patron->id}}-dLate" @if($patron->carthere == 'dLate') selected @endif>dLate</option>
                                     @foreach ($patronsInEvent as $patron1) 
                                         @if ($patron1->carthere == 'driving' && $patron->id != $patron1->id )
                                             <option id="carthere{{$patron->id}}-{{$patron1->id}}" @if($patron->carthere == $patron1->id) selected @endif>{{$patron1->name}}</option>
@@ -280,10 +276,6 @@
                                 <option id="carback{{$patron->id}}-any" @if($patron->carback == 'any') selected @endif>Passenger</option>
                                 <option id="carback{{$patron->id}}-driving" @if($patron->carback == 'driving') selected @endif>Driver</option>
                                 @if (!isset($publicShow))
-                                    <option id="carback{{$patron->id}}-pEarly" @if($patron->carback == 'pEarly') selected @endif>pEarly</option>
-                                    <option id="carback{{$patron->id}}-pLate" @if($patron->carback == 'pLate') selected @endif>pLate</option>
-                                    <option id="carback{{$patron->id}}-dEarly" @if($patron->carback == 'dEarly') selected @endif>dEarly</option>
-                                    <option id="carback{{$patron->id}}-dLate" @if($patron->carback == 'dLate') selected @endif>dLate</option>
                                     @foreach ($patronsInEvent as $patron2) 
                                         @if ($patron2->carback == 'driving' && $patron->id != $patron2->id)
                                             <option id="carback{{$patron->id}}-{{$patron2->id}}" @if($patron->carback == $patron2->id) selected @endif>{{$patron2->name}}</option>
