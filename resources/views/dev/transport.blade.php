@@ -1,6 +1,7 @@
 @extends('app')
 
 @section('content')
+<?php $defaultImg = 'https://scontent-hkg3-1.xx.fbcdn.net/hphotos-xpa1/v/t1.0-9/940909_10154104345177269_4110317739830709958_n.jpg?oh=21327a6e1ea096bebb8c9e370accf2f4&oe=57BC9A6F'; ?>
 <style>
     input[type='checkbox'] {
         width: 25px;
@@ -157,13 +158,15 @@
                     </div>
                     <hr class="col-xs-12 col-md-12" style="margin-top: 0px; margin-bottom: 10px;">
                 </div>
+                
+                
                 <div id="patron-grid">
                     <div id="AD-header" class="col-xs-12 col-sm-12 col-md-12 alpha-header" style="color:navy">A-D</div>
                     <div id="grid-AD">
                         @foreach ($patronsInEvent as $patron) 
                             @if ($patron->name[0] == "A" || $patron->name[0] == "B" ||  $patron->name[0] == "C" ||  $patron->name[0] == "D")
                                 <div id="square-{{$patron->id}}" data-name="{{$patron->name}}" class="patron-square @if ($patron->softDelete =='1') active-square @endif @if ($patron->carthere == 'driving') active-driver-square @endif col-xs-2 col-sm-2 col-md-2" style="padding:0px">
-                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%">
+                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%" onError="this.src='{{$defaultImg}}';">
                                     <div class="name-tagOverlay">{{$patron->name}}</div>
                                     <div class="driver-tagOverlay"></div>
                                 </div>
@@ -175,7 +178,7 @@
                         @foreach ($patronsInEvent as $patron) 
                             @if ($patron->name[0] == "E" || $patron->name[0] == "F" ||  $patron->name[0] == "G")
                                 <div id="square-{{$patron->id}}" data-name="{{$patron->name}}" class="patron-square @if ($patron->softDelete =='1') active-square @endif @if ($patron->carthere == 'driving') active-driver-square @endif col-xs-2 col-sm-2 col-md-2" style="padding:0px">
-                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%">
+                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%" onError="this.src='{{$defaultImg}}';">
                                     <div class="name-tagOverlay">{{$patron->name}}</div>
                                     <div class="driver-tagOverlay"></div>
                                 </div>
@@ -187,7 +190,7 @@
                         @foreach ($patronsInEvent as $patron) 
                             @if ($patron->name[0] == "H" || $patron->name[0] == "I" ||  $patron->name[0] == "J" ||  $patron->name[0] == "K" ||  $patron->name[0] == "L")
                                 <div id="square-{{$patron->id}}" data-name="{{$patron->name}}" class="patron-square @if ($patron->softDelete =='1') active-square @endif @if ($patron->carthere == 'driving') active-driver-square @endif col-xs-2 col-sm-2 col-md-2" style="padding:0px">
-                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%">
+                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%" onError="this.src='{{$defaultImg}}';">
                                     <div class="name-tagOverlay">{{$patron->name}}</div>
                                     <div class="driver-tagOverlay"></div>
                                 </div>
@@ -199,7 +202,7 @@
                         @foreach ($patronsInEvent as $patron) 
                             @if ($patron->name[0] == "M" || $patron->name[0] == "N" ||  $patron->name[0] == "O" ||  $patron->name[0] == "P" ||  $patron->name[0] == "Q")
                                 <div id="square-{{$patron->id}}" data-name="{{$patron->name}}" class="patron-square @if ($patron->softDelete =='1') active-square @endif @if ($patron->carthere == 'driving') active-driver-square @endif col-xs-2 col-sm-2 col-md-2" style="padding:0px">
-                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%">
+                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%" onError="this.src='{{$defaultImg}}';">
                                     <div class="name-tagOverlay">{{$patron->name}}</div>
                                     <div class="driver-tagOverlay"></div>
                                 </div>
@@ -211,7 +214,7 @@
                         @foreach ($patronsInEvent as $patron) 
                             @if ($patron->name[0] == "R" || $patron->name[0] == "S" ||  $patron->name[0] == "T" ||  $patron->name[0] == "U" ||  $patron->name[0] == "V")
                                 <div id="square-{{$patron->id}}" data-name="{{$patron->name}}" class="patron-square @if ($patron->softDelete =='1') active-square @endif @if ($patron->carthere == 'driving') active-driver-square @endif col-xs-2 col-sm-2 col-md-2" style="padding:0px">
-                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%">
+                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%" onError="this.src='{{$defaultImg}}';">
                                     <div class="name-tagOverlay">{{$patron->name}}</div>
                                     <div class="driver-tagOverlay"></div>
                                 </div>
@@ -223,7 +226,7 @@
                         @foreach ($patronsInEvent as $patron) 
                             @if ($patron->name[0] == "W" || $patron->name[0] == "X" ||  $patron->name[0] == "Y" ||  $patron->name[0] == "Z")
                                 <div id="square-{{$patron->id}}" data-name="{{$patron->name}}" class="patron-square @if ($patron->softDelete =='1') active-square @endif @if ($patron->carthere == 'driving') active-driver-square @endif col-xs-2 col-sm-2 col-md-2" style="padding:0px">
-                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%">
+                                    <img src="{{$patron->picurl}}" class="img-square" style="width:100%" onError="this.src='{{$defaultImg}}';">
                                     <div class="name-tagOverlay">{{$patron->name}}</div>
                                     <div class="driver-tagOverlay"></div>
                                 </div>
@@ -238,7 +241,7 @@
                             <input type="checkbox" id="patron{{$patron->id}}" @if ($patron->softDelete =='1') checked @endif> 
                         </div>
                         <div class="col-xs-2 col-sm-3 col-md-2 displayPic">
-                            <img src="{{$patron->picurl}}" alt="patronPic" class="img-thumbnail" style="width: 100%"> 
+                            <img src="{{$patron->picurl}}" alt="patronPic" class="img-thumbnail" style="width: 100%" onError="this.src='{{$defaultImg}}';"> 
                         </div>
                         <div class="col-xs-8 col-sm-7 col-md-3 patronDetailRow">
                             <div class="row">
@@ -831,7 +834,7 @@ $( document ).ready(function() {
                         tempHTMLstring +=   '<div class="col-xs-2 col-md-2">';
                     //}
                      tempHTMLstring += '<a data-toggle="modal" id="modalPatronThere'+passenger.id+'" href="'+URL+'/getModalPatron/'+passenger.id+'" data-target="#patronModal">'+
-                                                '<div><img src="'+passenger.picurl+'" class="img-thumbnail" alt="patronPic" id="imgPatronThere'+passenger.id+'"><img class="colored-tag" src="{{ URL::to('/') }}/img/'+tag_color+'-tag.png"></div>'+
+                                                '<div><img src="'+passenger.picurl+'" class="img-thumbnail" alt="patronPic" id="imgPatronThere'+passenger.id+'" onError="this.src=\'{{$defaultImg}}\';"><img class="colored-tag" src="{{ URL::to('/') }}/img/'+tag_color+'-tag.png"></div>'+
                                             '</a>'+
                                             '<p id="textPatronThere'+passenger.id+'" class="name-field">'+passenger.name.substring(0, 8)+'</p>'+
                                         '</div>';
@@ -858,7 +861,7 @@ $( document ).ready(function() {
                         tempHTMLstring +=   '<div class="col-xs-2 col-md-2">';
                     //}
                      tempHTMLstring += '<a data-toggle="modal" id="modalPatronThere'+passenger.id+'" href="'+URL+'/getModalPatron/'+passenger.id+'" data-target="#patronModal">'+
-                                                '<div><img src="'+passenger.picurl+'" class="img-thumbnail" alt="patronPic" id="imgPatronThere'+passenger.id+'"><img class="colored-tag" src="{{ URL::to('/') }}/img/'+tag_color+'-tag.png"></div>'+
+                                                '<div><img src="'+passenger.picurl+'" class="img-thumbnail" alt="patronPic" id="imgPatronThere'+passenger.id+'" onError="this.src=\'{{$defaultImg}}\';"><img class="colored-tag" src="{{ URL::to('/') }}/img/'+tag_color+'-tag.png"></div>'+
                                             '</a>'+
                                             '<p id="textPatronThere'+passenger.id+'" class="name-field">'+passenger.name.substring(0, 8)+'</p>'+
                                         '</div>';
